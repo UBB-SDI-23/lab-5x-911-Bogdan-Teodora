@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import { GlobalURL } from "../../main";
-import { BACKEND_API_URL } from "../../constants";
 
 export const CarDelete = () => {
 	const { id } = useParams();
@@ -11,7 +10,7 @@ export const CarDelete = () => {
 
 	const handleDelete = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
-		await axios.delete(`${BACKEND_API_URL}/cars/${id}/delete`);
+		await axios.delete(GlobalURL + `/cars/${id}/delete`);
 		// go to cars list
 		navigate("/cars");
 	};
