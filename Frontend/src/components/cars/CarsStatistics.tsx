@@ -25,7 +25,7 @@ export const CarsStatistics = () => {
     const [cars, setCars] = useState([]);
   
     useEffect(() =>{   
-      fetch(GlobalURL + "/cars/statistics")
+      fetch("${BACKEND_API_URL}/cars/statistics")
           .then((res) => res.json())
           .then((data) => {
                 setCars(data),

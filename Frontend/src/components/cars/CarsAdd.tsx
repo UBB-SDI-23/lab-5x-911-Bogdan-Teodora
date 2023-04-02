@@ -9,6 +9,7 @@ import axios from "axios";
 
 import { Car } from "../../models/Car";
 import { GlobalURL } from "../../main";
+import { BACKEND_API_URL } from "../../constants";
 
 export const CarsAdd = () => {
 	const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const CarsAdd = () => {
 	const addcar = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		try {
-			await axios.post(GlobalURL + `/cars/add`, car);
+			await axios.post(`${BACKEND_API_URL}/cars/add`, car);
 			navigate("/cars");
 		} catch (error) {
 			console.log(error);
