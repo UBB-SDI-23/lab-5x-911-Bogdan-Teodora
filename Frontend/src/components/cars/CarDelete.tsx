@@ -2,6 +2,7 @@ import { Container, Card, CardContent, IconButton, CardActions, Button } from "@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
+import { GlobalURL } from "../../main";
 
 export const CarDelete = () => {
 	const { id } = useParams();
@@ -9,7 +10,7 @@ export const CarDelete = () => {
 
 	const handleDelete = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
-		await axios.delete(`http://localhost:8080/cars/${id}/delete`);
+		await axios.delete(GlobalURL + `/cars/${id}/delete`);
 		// go to cars list
 		navigate("/cars");
 	};

@@ -8,6 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 
 import { Car } from "../../models/Car";
+import { GlobalURL } from "../../main";
 
 export const CarsAdd = () => {
 	const navigate = useNavigate();
@@ -25,7 +26,7 @@ export const CarsAdd = () => {
 	const addcar = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		try {
-			await axios.post(`http://localhost:8080/cars/add`, car);
+			await axios.post(GlobalURL + `/cars/add`, car);
 			navigate("/cars");
 		} catch (error) {
 			console.log(error);

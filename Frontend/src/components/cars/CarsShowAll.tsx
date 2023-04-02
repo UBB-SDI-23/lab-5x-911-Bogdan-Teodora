@@ -19,13 +19,14 @@ import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
+import { GlobalURL } from "../../main";
 
 export const CarsShowAll = () => {
     const [loading, setLoading]=useState(false);
     const [cars, setCars] = useState([]);
   
     useEffect(() =>{   
-      fetch("http://localhost:8080/cars")
+      fetch(GlobalURL + "/cars")
           .then((res) => res.json())
           .then((data) => {
                 setCars(data),

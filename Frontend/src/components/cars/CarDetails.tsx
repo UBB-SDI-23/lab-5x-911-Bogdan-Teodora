@@ -8,6 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 
 import { Car } from "../../models/Car";
+import { GlobalURL } from "../../main";
 
 export const CarDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ export const CarDetails = () => {
         const fetchCar = async () => {
           try {
             
-            const response = await fetch(`http://localhost:8080/cars/${id}/details`);
+            const response = await fetch(GlobalURL + `/cars/${id}/details`);
             const data = await response.json();
             setCars(data);
             console.log(`Car id: ${data.id}`);

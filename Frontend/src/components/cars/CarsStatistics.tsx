@@ -18,13 +18,14 @@ import { Link } from "react-router-dom";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { GlobalURL } from "../../main";
 
 export const CarsStatistics = () => {
     const [loading, setLoading]=useState(false);
     const [cars, setCars] = useState([]);
   
     useEffect(() =>{   
-      fetch("http://localhost:8080/cars/statistics")
+      fetch(GlobalURL + "/cars/statistics")
           .then((res) => res.json())
           .then((data) => {
                 setCars(data),
