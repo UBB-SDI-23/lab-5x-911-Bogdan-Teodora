@@ -17,9 +17,9 @@ export const CarUpdate = () => {
 
 	//const [loading, setLoading] = useState(true)
     
-	const [car, setCar] = useState<Car>({
+	const [car, setCar] = useState({
         id: 0,
-        model: "octavia",
+        model: "",
         brand: "",
         color: "",
         year_manufacture: 0,
