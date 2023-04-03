@@ -76,7 +76,7 @@ export const CarUpdate = () => {
                             value = {car.brand}
 						/>
                         <TextField
-                                id="color"
+                                id="$car.color"
                                 label="Color"
                                 variant="outlined"
                                 fullWidth
