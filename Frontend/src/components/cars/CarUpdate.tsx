@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, IconButton, TextField } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CircularProgress, IconButton, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -11,48 +11,64 @@ import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 
 export const CarUpdate = () => {
-    const { id } = useParams();
+
 	const navigate = useNavigate();
-    const [loading, setLoading] = useState(true)
-	const [car, setCar] = useState<Car>({
+    const { id } = useParams();
+
+	const [loading, setLoading] = useState(true)
+	const [car, setCar] = useState({
         id: 0,
         model: "",
         brand: "",
         color: "",
         year_manufacture: 0,
         nrkilometers: 1,
-
-	});
+    });
 
     useEffect(() => {
-		const fetchcar = async () => {
-			const response = await fetch(`${BACKEND_API_URL}/car/${id}/edit`);
-			const fetchedcar = await response.json();
-			setCar(fetchedcar);
+		const fetchCar= async () => {
+			const response = await fetch(`${BACKEND_API_URL}/cars/${id}/edit`);
+			const car = await response.json();
+			setCar({
+                id:car.id,
+				model: car.model,
+				brand: car.brand,
+				color: car.color,
+				year_manufacture: car.year_manufacture,
+				nrkilometers: car.nrkilometers,
+		})
 			setLoading(false);
+            console.log(car);
 		};
-		fetchcar();
+		fetchCar();
 	}, [id]);
 
-	const updatecar = async (event: { preventDefault: () => void }) => {
+	const updateCar = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		try {
-			await axios.put(`/cars/${id}/edit`, car);
-			navigate("/cars");
+			await axios.put(`${BACKEND_API_URL}/cars/${id}/edit`, car);
+			navigate(`/cars/${id}`);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
+
 	return (
 		<Container>
+
+		{loading && <CircularProgress />}
+
+		{!loading && !car && <div>Car not found</div>}
+
+		{!loading && (
 			<Card>
 				<CardContent>
-					<IconButton component={Link} sx={{ mr: 3 }} to={`/cars`}>
+					<IconButton component={Link} sx={{ mr: 3 }} to={`/cars/${id}/details`}>
 						<ArrowBackIcon />
 					</IconButton>{" "}
-					<form onSubmit={updatecar}>
-						<TextField
+					<form onSubmit={updateCar}>
+                    <TextField
 							id="model"
 							label="Model"
 							variant="outlined"
@@ -94,12 +110,13 @@ export const CarUpdate = () => {
 							onChange={(event) => setCar({ ...car, nrkilometers: parseInt(event.target.value) })}
 						/>
 
-                        
-						<Button type="submit">Edit car details</Button>
+						<Button type="submit">Update car</Button>
 					</form>
 				</CardContent>
 				<CardActions></CardActions>
 			</Card>
+		)
+}
 		</Container>
 	);
 };
