@@ -29,6 +29,7 @@ class CarController {
     // Aggregate root
     // tag::get-aggregate-root[]
     @GetMapping("/cars")
+    @CrossOrigin(origins = "*")
     List<CarDTO> all() {
 //        return repository.findAll();
 
