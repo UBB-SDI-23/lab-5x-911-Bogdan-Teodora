@@ -19,13 +19,15 @@ import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { GlobalURL } from "../../main";
+import { BACKEND_API_URL } from "../../constants";
+
 
 export const CarsStatistics = () => {
     const [loading, setLoading]=useState(false);
     const [cars, setCars] = useState([]);
   
     useEffect(() =>{   
-      fetch(GlobalURL + "/cars/statistics")
+      fetch(`${BACKEND_API_URL}/cars/statistics`)
           .then((res) => res.json())
           .then((data) => {
                 setCars(data),

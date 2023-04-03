@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { BACKEND_API_URL } from "../../constants";
 
 
 import { Car } from "../../models/Car";
@@ -18,7 +19,7 @@ export const CarDetails = () => {
         const fetchCar = async () => {
           try {
             
-            const response = await fetch(GlobalURL + `/cars/${id}/details`);
+            const response = await fetch(`${BACKEND_API_URL}/cars/${id}/details`);
             const data = await response.json();
             setCars(data);
             console.log(`Car id: ${data.id}`);

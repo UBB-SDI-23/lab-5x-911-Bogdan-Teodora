@@ -6,6 +6,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
+import { BACKEND_API_URL } from "../../constants";
+
 
 import { Car } from "../../models/Car";
 import { GlobalURL } from "../../main";
@@ -26,7 +28,7 @@ export const CarsAdd = () => {
 	const addcar = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		try {
-			await axios.post(GlobalURL + `/cars/add`, car);
+			await axios.post(`${BACKEND_API_URL}/cars/add`, car);
 			navigate("/cars");
 		} catch (error) {
 			console.log(error);
