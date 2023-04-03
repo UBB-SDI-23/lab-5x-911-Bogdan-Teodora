@@ -11,6 +11,7 @@ import { CarDetails } from './components/cars/CarDetails'
 import { CarDelete } from './components/cars/CarDelete'
 import { CarsAdd } from './components/cars/CarsAdd'
 import { CarsStatistics } from './components/cars/CarsStatistics'
+import { CarUpdate} from './components/cars/CarUpdate';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/cars/:id/delete" element={<CarDelete />} />
           <Route path="/cars/add" element={<CarsAdd />} />
           <Route path="/cars/statistics" element={<CarsStatistics />} />
+		  <Route path="/cars/:id/edit" element={<CarUpdate />} />
 				</Routes>
 			</Router>
 		</React.Fragment>

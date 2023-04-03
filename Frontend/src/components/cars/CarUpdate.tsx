@@ -10,7 +10,7 @@ import { Car } from "../../models/Car";
 import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 
-export const carUpdate = () => {
+export const CarUpdate = () => {
     const { id } = useParams();
 	const navigate = useNavigate();
     const [loading, setLoading] = useState(true)
@@ -95,7 +95,7 @@ export const carUpdate = () => {
 						/>
 
                         
-						<Button type="submit">Update car details</Button>
+						<Button type="submit">Edit car details</Button>
 					</form>
 				</CardContent>
 				<CardActions></CardActions>
