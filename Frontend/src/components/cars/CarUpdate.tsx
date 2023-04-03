@@ -64,7 +64,7 @@ export const CarUpdate = () => {
 		{!loading && (
 			<Card>
 				<CardContent>
-					<IconButton component={Link} sx={{ mr: 3 }} to={`/cars/${id}/details`}>
+					<IconButton component={Link} sx={{ mr: 3 }} to={`${BACKEND_API_URL}/cars/${id}/details`}>
 						<ArrowBackIcon />
 					</IconButton>{" "}
 					<form onSubmit={updateCar}>
