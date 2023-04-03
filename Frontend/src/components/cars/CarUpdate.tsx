@@ -37,7 +37,7 @@ export const carUpdate = () => {
 	const updatecar = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		try {
-			await axios.put(`/api/cars/${id}/edit`, car);
+			await axios.put(`/cars/${id}/edit`, car);
 			navigate("/cars");
 		} catch (error) {
 			console.log(error);
