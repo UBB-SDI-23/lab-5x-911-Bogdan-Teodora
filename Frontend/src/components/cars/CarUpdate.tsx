@@ -15,7 +15,7 @@ export const CarUpdate = () => {
 	const navigate = useNavigate();
     const { id } = useParams();
 
-	const [loading, setLoading] = useState(true)
+	//const [loading, setLoading] = useState(true)
     
 	const [car, setCar] = useState<Car>({
         id: 0,
@@ -51,15 +51,9 @@ export const CarUpdate = () => {
 
 	return (
 		<Container>
-
-		{loading && <CircularProgress />}
-
-		{!loading && !car && <div>Car not found</div>}
-
-		{!loading && (
 			<Card>
 				<CardContent>
-					<IconButton component={Link} sx={{ mr: 3 }} to={`/cars/${id}/details`}>
+					<IconButton component={Link} sx={{ mr: 3 }} to={`/cars`}>
 						<ArrowBackIcon />
 					</IconButton>{" "}
 					<form onSubmit={updateCar}>
@@ -113,8 +107,8 @@ export const CarUpdate = () => {
 				</CardContent>
 				<CardActions></CardActions>
 			</Card>
-		)
-}
+		
+
 		</Container>
 	);
 };
