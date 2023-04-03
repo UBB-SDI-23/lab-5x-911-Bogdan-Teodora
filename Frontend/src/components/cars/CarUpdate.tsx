@@ -28,7 +28,7 @@ export const CarUpdate = () => {
     
       useEffect(() => {
         const fetchCar = async () => {
-          const response = await fetch(`${BACKEND_API_URL}/cars/${id}/details`);
+          const response = await fetch(`${BACKEND_API_URL}/cars/${id}/edit`);
           const cars = await response.json();
           setCar(cars);
           console.log(cars);
