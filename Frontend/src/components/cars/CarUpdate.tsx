@@ -19,7 +19,7 @@ export const CarUpdate = () => {
     
 	const [car, setCar] = useState<Car>({
         id: 0,
-        model: "",
+        model: "octavia",
         brand: "",
         color: "",
         year_manufacture: 0,
