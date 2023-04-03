@@ -39,7 +39,7 @@ export const CarUpdate = () => {
       const updateCar = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         try {
-          await axios.put(`${BACKEND_API_URL}/cars/${id}/details`, car);
+          await axios.put(`${BACKEND_API_URL}/cars/${id}/edit`, car);
           //await axios.put(`../../api/busroutes/${busRouteId}`, busroute);
           //navigate(`/busroutes/${busRouteId}/`);
           navigate("/cars");
