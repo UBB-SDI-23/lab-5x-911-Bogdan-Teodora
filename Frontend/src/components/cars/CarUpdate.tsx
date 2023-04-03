@@ -25,34 +25,28 @@ export const CarUpdate = () => {
         year_manufacture: 0,
         nrkilometers: 1,
     });
-
-    useEffect(() => {
-		const fetchCar= async () => {
-			const response = await fetch(`${BACKEND_API_URL}/cars/${id}/details`);
-			const car = await response.json();
-			setCar({
-                id:car.id,
-				model: car.model,
-				brand: car.brand,
-				color: car.color,
-				year_manufacture: car.year_manufacture,
-				nrkilometers: car.nrkilometers,
-		})
-			setLoading(false);
-            console.log(car);
-		};
-		fetchCar();
-	}, [id]);
-
-	const updateCar = async (event: { preventDefault: () => void }) => {
-		event.preventDefault();
-		try {
-			await axios.put(`${BACKEND_API_URL}/cars/${id}/edit`, car);
-			navigate(`/cars/${id}/details`);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+    
+      useEffect(() => {
+        const fetchCar = async () => {
+          const response = await fetch(`${BACKEND_API_URL}/cars/${id}/details`);
+          const cars = await response.json();
+          setCar(cars);
+          console.log(cars);
+        };
+        fetchCar();
+      }, [id]);
+    
+      const updateCar = async (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+        try {
+          await axios.put(`${BACKEND_API_URL}/cars/${id}/details`, car);
+          //await axios.put(`../../api/busroutes/${busRouteId}`, busroute);
+          //navigate(`/busroutes/${busRouteId}/`);
+          navigate("/cars");
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
 
 	return (
@@ -76,6 +70,7 @@ export const CarUpdate = () => {
 							fullWidth
 							sx={{ mb: 2 }}
 							onChange={(event) => setCar({ ...car, model: event.target.value })}
+                            value = {car.model}
 						/>
 						<TextField
 							id="brand"
@@ -84,6 +79,7 @@ export const CarUpdate = () => {
 							fullWidth
 							sx={{ mb: 2 }}
 							onChange={(event) => setCar({ ...car, brand: event.target.value })}
+                            value = {car.brand}
 						/>
                         <TextField
                                 id="color"
@@ -92,6 +88,7 @@ export const CarUpdate = () => {
                                 fullWidth
                                 sx={{ mb: 2 }}
                                 onChange={(event) => setCar({ ...car, color: event.target.value })}
+                                value={car.color}
                             />
 
                         <TextField
