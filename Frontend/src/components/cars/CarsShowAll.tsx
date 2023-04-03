@@ -13,6 +13,7 @@ import {
 	Container,
 	IconButton,
 	Tooltip,
+  Button
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
@@ -36,6 +37,21 @@ export const CarsShowAll = () => {
                       
                   });
       }, []);  
+      console.log(cars);
+
+      const sortCars = () => {
+        const sortedCars = [...cars].sort((a: Car, b: Car) => {
+            if (a.nrkilometers < b.nrkilometers) {
+                return -1;
+            }
+            if (a.nrkilometers > b.nrkilometers) {
+                return 1;
+            }
+            return 0;
+        })
+        console.log(sortedCars);
+        setCars(sortedCars);
+    }
 
       return (
         <Container>
@@ -52,6 +68,13 @@ export const CarsShowAll = () => {
             </IconButton>
                     </div>
           )}
+
+          {!loading && (
+                <Button sx={{color:"black"}} onClick={sortCars} >
+                    Sort cars
+                </Button>
+            )}
+
           {!loading && cars.length > 0 && (
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
