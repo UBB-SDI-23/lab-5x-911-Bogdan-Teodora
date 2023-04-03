@@ -47,7 +47,7 @@ export const CarUpdate = () => {
 		event.preventDefault();
 		try {
 			await axios.put(`${BACKEND_API_URL}/cars/${id}/edit`, car);
-			navigate(`/cars/${id}`);
+			navigate(`/cars/${id}/details`);
 		} catch (error) {
 			console.log(error);
 		}
