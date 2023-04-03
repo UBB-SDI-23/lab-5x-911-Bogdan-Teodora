@@ -20,13 +20,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
 import { GlobalURL } from "../../main";
+import { BACKEND_API_URL } from "../../constants";
+
 
 export const CarsShowAll = () => {
     const [loading, setLoading]=useState(false);
     const [cars, setCars] = useState([]);
   
     useEffect(() =>{   
-      fetch(GlobalURL + "/cars")
+      fetch(`${BACKEND_API_URL}/cars`)
           .then((res) => res.json())
           .then((data) => {
                 setCars(data),
