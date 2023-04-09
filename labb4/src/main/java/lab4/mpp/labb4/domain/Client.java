@@ -1,5 +1,6 @@
 package lab4.mpp.labb4.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -25,10 +26,15 @@ public class Client{
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<BookingDetails> bookingDetailsSet;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    //@MapsId
+//    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//    //@MapsId
+//    @JoinColumn(name = "address_id")
+//    private Address address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
-    private Address address;
+    @JsonIgnore
+    Address address;
 
 //    public Set<BookingDetails> getBookingDetailsSet() {
 //        return  bookingDetailsSet;

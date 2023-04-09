@@ -3,14 +3,15 @@ package lab4.mpp.labb4.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name="address")
 public class Address {
     private @Id
-    @GeneratedValue Long address_id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY) Long address_id;
     @Column(name="country")
     private String country;
     @Column(name="county")
@@ -23,6 +24,10 @@ public class Address {
 //    @OneToOne
 //    @PrimaryKeyJoinColumn
 //    private Client client;
+
+    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Client> clientList;
+
 
     public Address() {
     }
@@ -40,6 +45,14 @@ public class Address {
         this.county = county;
         this.city = city;
         this.additional_info = additional_info;
+    }
+
+    public List<Client> getClientList() {
+        return clientList;
+    }
+
+    public void setClientList(List<Client> clientList) {
+        this.clientList = clientList;
     }
 
     public Long getAddress_id() {
