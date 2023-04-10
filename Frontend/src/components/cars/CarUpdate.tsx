@@ -64,30 +64,31 @@ import {
               <TextField
                 id="model"
                 label="Model"
-                variant="outlined"
+                variant="standard"
+                defaultValue={car.model}
                 fullWidth
                 sx={{ mb: 2 }}
                 onChange={(event) =>
                   setCars({ ...car, model: event.target.value })
                 }
-                value={car.model}
               />
               <TextField
                 id="brand"
                 label="Brand"
-                variant="outlined"
+                variant="standard"
+                defaultValue={car.brand}
                 fullWidth
                 sx={{ mb: 2 }}
                 onChange={(event) =>
                   setCars({ ...car, brand: event.target.value })
                 }
-                value={car.brand}
               />
   
               <TextField
                 id="color"
                 label="Color"
-                variant="outlined"
+                variant="standard"
+                defaultValue={car.color}
                 fullWidth
                 sx={{ mb: 2 }}
                 onChange={(event) =>

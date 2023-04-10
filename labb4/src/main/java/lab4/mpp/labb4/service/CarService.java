@@ -6,12 +6,13 @@ import lab4.mpp.labb4.repo.BookingRepository;
 import lab4.mpp.labb4.repo.CarRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +53,19 @@ class CarService {
 //        return carDTOS;
     }
     // end::get-aggregate-root[]
+
+    public List<CarDTO> findByPublished(int page, int size) {
+            ModelMapper modelMapper = new ModelMapper();
+            modelMapper.typeMap(Car.class, CarDTO.class);
+            //PageRequest pageRequest = PageRequest.of(0,50);
+            Pageable paging = PageRequest.of(page, size);
+            List<CarDTO> carDTOS = repository.findAll(paging).stream()
+                    .map(car->modelMapper.map(car,CarDTO.class))
+                    .collect(Collectors.toList());
+
+
+            return carDTOS;
+    }
 
     public Car newCar( Car newCar) {
         return repository.save(newCar);

@@ -5,13 +5,14 @@ import lab4.mpp.labb4.domain.*;
 import lab4.mpp.labb4.repo.*;
 import lab4.mpp.labb4.service.CarService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.awt.print.Pageable;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,6 +40,13 @@ class CarController {
     List<CarDTO> all() {
         return carService.all();
 
+    }
+
+    @GetMapping("/cars/paged")
+    public List<CarDTO> AllPaged(
+            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        return carService.findByPublished(page,size);
     }
     // end::get-aggregate-root[]
 

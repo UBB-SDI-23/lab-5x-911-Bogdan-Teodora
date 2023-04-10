@@ -13,7 +13,9 @@ import {
 	Container,
 	IconButton,
 	Tooltip,
-  Button
+  Button,
+  Pagination,
+  Box
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
@@ -23,21 +25,28 @@ import AddIcon from "@mui/icons-material/Add";
 import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 
-
+const PAGE_SIZE = 100;
 export const CarsShowAll = () => {
     const [loading, setLoading]=useState(false);
     const [cars, setCars] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalCars, setTotalCars] = useState(0);
   
     useEffect(() =>{   
-      fetch(`${BACKEND_API_URL}/cars`)
+      fetch(`http://localhost:8080/cars/paged?page=${page - 1}&size=${PAGE_SIZE}`)
           .then((res) => res.json())
           .then((data) => {
-                setCars(data),
+                setCars(data);
+                setTotalCars(data.totalElements);
                 setLoading(false);
                       
                   });
-      }, []);  
+      }, [page]);  
       console.log(cars);
+      const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+      };
+    
 
       const sortCars = () => {
         const sortedCars = [...cars].sort((a: Car, b: Car) => {
@@ -76,6 +85,7 @@ export const CarsShowAll = () => {
             )}
 
           {!loading && cars.length > 0 && (
+            <>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -91,6 +101,7 @@ export const CarsShowAll = () => {
                 <TableBody>
                   {cars.map((car:Car, index) => (
                     <TableRow key={index}>
+                      
                       <TableCell component="th" scope="row">
                         {index + 1}
                       </TableCell>
@@ -127,6 +138,17 @@ export const CarsShowAll = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
+            <Pagination
+              count={Math.ceil(totalCars / PAGE_SIZE)}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+              variant="outlined"
+              shape="rounded"
+            />
+          </Box>
+        </>
           )}
         </Container>
       );
