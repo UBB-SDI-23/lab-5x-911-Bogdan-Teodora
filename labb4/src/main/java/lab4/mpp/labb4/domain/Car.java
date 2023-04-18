@@ -29,21 +29,25 @@ public class Car{
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<BookingDetails> bookingDetailsSet;
 
+    private String description;
 
-    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers) {
+
+    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers, String description) {
         this.model = model;
         this.brand = brand;
         this.color = color;
         this.year_manufacture = year_manufacture;
         this.nrkilometers = nrkilometers;
+        this.description=description;
     }
 
-    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers, List<BookingDetails> bookingDetailsSet) {
+    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers,String description,  List<BookingDetails> bookingDetailsSet) {
         this.model = model;
         this.brand = brand;
         this.color = color;
         this.year_manufacture = year_manufacture;
         this.nrkilometers = nrkilometers;
+        this.description=description;
         this.bookingDetailsSet = bookingDetailsSet;
     }
 
@@ -105,6 +109,14 @@ public class Car{
 
     public void setNrkilometers(int nr_kilometers) {
         this.nrkilometers = nr_kilometers;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
