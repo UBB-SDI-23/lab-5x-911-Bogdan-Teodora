@@ -92,7 +92,14 @@ public class CarDTO {
         this.nrkilometers = nrkilometers;
     }
 
-//    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;
 //        if (!(o instanceof Car car)) return false;
