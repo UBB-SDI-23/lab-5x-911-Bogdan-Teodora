@@ -5,4 +5,5 @@ export interface Car{
     color : string;
     year_manufacture : number;
     nrkilometers : number;
+    description : string;
 }

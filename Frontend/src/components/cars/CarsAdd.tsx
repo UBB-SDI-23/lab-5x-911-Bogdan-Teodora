@@ -22,6 +22,7 @@ export const CarsAdd = () => {
             color: "",
             year_manufacture: 0,
             nrkilometers: 1,
+			description : "",
             
     });
 
@@ -85,6 +86,14 @@ export const CarsAdd = () => {
 							fullWidth
 							sx={{ mb: 2 }}
 							onChange={(event) => setCars({ ...car, nrkilometers: parseInt(event.target.value) })}
+						/>
+						<TextField
+							id="description"
+							label="Description "
+							variant="outlined"
+							fullWidth
+							sx={{ mb: 2 }}
+							onChange={(event) => setCars({ ...car, description: event.target.value })}
 						/>
 						<Button type="submit">Add car</Button>
 					</form>

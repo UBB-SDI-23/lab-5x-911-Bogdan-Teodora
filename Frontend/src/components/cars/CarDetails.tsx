@@ -44,6 +44,7 @@ export const CarDetails = () => {
 					<p>Car Color : {car?.color}</p>
                     <p>Car Year of manufacture : {car?.year_manufacture}</p>
                     <p>Car Nr Kilometers : {car?.nrkilometers}</p>
+					<p>Car description : {car?.description}</p>
 				</CardContent>
 				<CardActions>
 					<IconButton component={Link} sx={{ mr: 3 }} to={`/cars/${id}/edit`}>

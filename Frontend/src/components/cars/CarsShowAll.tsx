@@ -96,6 +96,7 @@ export const CarsShowAll = () => {
                     <TableCell align="right">Color</TableCell>
                     <TableCell align="center">Year of manufacture</TableCell>
                     <TableCell align="center">Number kilometers</TableCell>
+                    <TableCell align="center">Description</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -115,6 +116,7 @@ export const CarsShowAll = () => {
                         <TableCell align="right">{car.color}</TableCell>
                         <TableCell align="center">{car.year_manufacture}</TableCell>
                         <TableCell align="center">{car.nrkilometers}</TableCell>
+                        <TableCell align="center">{car.description}</TableCell>
                       <TableCell align="right">
                         <IconButton
                           component={Link}
