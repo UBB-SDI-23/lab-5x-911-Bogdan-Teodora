@@ -43,9 +43,9 @@ public class TestCarController {
         // Create test data
         BookingDetails bookingDetails1 = new BookingDetails(1L,"12 Feb","12 Mar",1000,"booked","cluj","cluj");
         BookingDetails bookingDetails2 = new BookingDetails(2L,"20 Jul","14 Aug",2000,"reserved","brasov","cluj");
-        Car car1 = new Car( "5", "mazda","red",2021,20000, Arrays.asList(bookingDetails1,bookingDetails2));
+        Car car1 = new Car( "5", "mazda","red",2021,20000,"masina merge foarte bine", Arrays.asList(bookingDetails1,bookingDetails2));
         BookingDetails bookingDetails3 = new BookingDetails(3L,"10 Jul","04 Aug",2000,"reserved","brasov","cluj");
-        Car car2 = new Car("cx-5", "mazda","red",2020,40000, List.of(bookingDetails3));
+        Car car2 = new Car("cx-5", "mazda","red",2020,40000, "masina merge foarte bine", List.of(bookingDetails3));
         List<Car> cars = Arrays.asList(car1, car2);
 
         // Configure the mock behavior
