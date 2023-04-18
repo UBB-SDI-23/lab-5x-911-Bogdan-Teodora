@@ -9,6 +9,8 @@ public class CarsDTOStatisticsBookingPrice {
     private int nrkilometers;
     private double agvBookingPrice;
 
+    private String description;
+
     public CarsDTOStatisticsBookingPrice() {
     }
 
@@ -58,6 +60,14 @@ public class CarsDTOStatisticsBookingPrice {
 
     public void setNrkilometers(int nrkilometers) {
         this.nrkilometers = nrkilometers;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getAgvBookingPrice() {

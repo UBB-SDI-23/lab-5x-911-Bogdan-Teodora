@@ -12,25 +12,28 @@ public class CarDTO {
     private int year_manufacture;
     private int nrkilometers;
     //private List<BookingDTOWithID> bookings= new ArrayList<>();
+    private String description;
 
     public CarDTO() {
     }
 
-    public CarDTO(Long id, String model, String brand, String color, int year_manufacture, int nrkilometers) {
+    public CarDTO(Long id, String model, String brand, String color, int year_manufacture, int nrkilometers, String description) {
         this.id = id;
         this.model = model;
         this.brand = brand;
         this.color = color;
         this.year_manufacture = year_manufacture;
         this.nrkilometers = nrkilometers;
+        this.description = description;
     }
 
-    public CarDTO(String model, String brand, String color, int year_manufacture, int nrkilometers) {
+    public CarDTO(String model, String brand, String color, int year_manufacture, int nrkilometers, String description) {
         this.model = model;
         this.brand = brand;
         this.color = color;
         this.year_manufacture = year_manufacture;
         this.nrkilometers = nrkilometers;
+        this.description= description;
     }
 
 //    public List<BookingDTOWithID> getBookings() {
