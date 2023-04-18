@@ -33,7 +33,7 @@ export const CarsShowAll = () => {
     const [totalCars, setTotalCars] = useState(0);
   
     useEffect(() =>{   
-      fetch(`http://localhost:8080/cars/paged?page=${page - 1}&size=${PAGE_SIZE}`)
+      fetch(`${BACKEND_API_URL}/cars/paged?page=${page - 1}&size=${PAGE_SIZE}`)
           .then((res) => res.json())
           .then((data) => {
                 setCars(data);
