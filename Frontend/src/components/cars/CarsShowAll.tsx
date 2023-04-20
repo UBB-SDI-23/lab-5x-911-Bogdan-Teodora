@@ -31,24 +31,32 @@ const PAGE_SIZE = 100;
 export const CarsShowAll = () => {
     const [loading, setLoading] = useState(false);
     const [car, setCars] = useState<Car[]>([]);
-    const [pageSize, setPageSize] = useState(100);
+    const [pageSize, setPageSize] = useState(10);
     const [totalCars, setTotalCars] =useState(0)
     const [currentPage, setCurrentPage]=useState(0)
   
   
     useEffect(() => {
       setLoading(true);
-  
-      const fetchCars = () => {
-        fetch(`${BACKEND_API_URL}/cars/paged?page=${currentPage}&size=${pageSize}`)
+
+      const fetchRecLbl = () => {
+        fetch(`http://localhost:8080/cars/countAll`)
+        .then((response) => response.json())
+        .then((count) => {
+          fetch(`http://localhost:8080/cars/page/${currentPage}/size/${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalCars(1000000);
+            setTotalCars(count);
             setCars(data);
             setLoading(false);
           });
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+        });
       };
-      fetchCars();
+      fetchRecLbl();
     }, [currentPage, pageSize]);
   
     

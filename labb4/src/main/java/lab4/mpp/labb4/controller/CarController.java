@@ -42,10 +42,8 @@ class CarController {
 
     }
 
-    @GetMapping("/cars/paged")
-    public List<CarDTO> AllPaged(
-            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+    @GetMapping("/cars/page/{page}/size/{size}")
+    public List<CarDTO> AllPaged(@PathVariable int page, @PathVariable int size) {
         PageRequest pr = PageRequest.of(page, size);
         return carService.allPaged(pr);
     }
