@@ -40,21 +40,15 @@ export const BookingsShowAll = () => {
       setLoading(true);
   
       const fetchBookings = () => {
-        fetch(`${BACKEND_API_URL}/bookings/countAll`)
-        .then((response) => response.json())
-        .then((count) => {
-          fetch(`${BACKEND_API_URL}/bookings/paged?page=${currentPage}&size=${pageSize}`)
+        
+          fetch(`http://localhost:8080/bookings/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalBookings(count);
+            setTotalBookings(10000000);
             setBookings(data);
             setLoading(false);
           });
-        })
-        .catch((error) => {
-          console.error(error);
-          setLoading(false);
-        });
+        
       };
       fetchBookings();
     }, [currentPage, pageSize]);
