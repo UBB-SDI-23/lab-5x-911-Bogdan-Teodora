@@ -38,10 +38,10 @@ export const AddressDetails = () => {
 						<ArrowBackIcon />
 					</IconButton>{" "}
 					<h1>Address Details</h1>
-					<p>Address phone number: {address?.country}</p>
-					<p>Address email address: {address?.county}</p>
-					<p>Address date of birth : {address?.city}</p>
-					<p>Address last name : {address?.additional_info}</p>
+					<p>Address country: {address?.country}</p>
+					<p>Address county: {address?.county}</p>
+					<p>Address city : {address?.city}</p>
+					<p>Address additional_info : {address?.additional_info}</p>
 				</CardContent>
 				<CardActions>
 					<IconButton component={Link} sx={{ mr: 3 }} to={`/addresses/${id}/edit`}>
