@@ -39,21 +39,14 @@ export const ClientsShowAll = () => {
       setLoading(true);
   
       const fetchClients = () => {
-        fetch(`${BACKEND_API_URL}/clients/countAll`)
-        .then((response) => response.json())
-        .then((count) => {
-          fetch(`${BACKEND_API_URL}/clients/paged?page=${currentPage}&size=${pageSize}`)
+        fetch(`${BACKEND_API_URL}/clients/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalClients(count);
+            setTotalClients(100000);
             setClients(data);
             setLoading(false);
           });
-        })
-        .catch((error) => {
-          console.error(error);
-          setLoading(false);
-        });
+        
       };
       fetchClients();
     }, [currentPage, pageSize]);

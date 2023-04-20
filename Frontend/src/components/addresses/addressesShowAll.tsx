@@ -40,21 +40,14 @@ export const AddressesShowAll = () => {
       setLoading(true);
   
       const fetchAddresses = () => {
-        fetch(`${BACKEND_API_URL}/addresses/countAll`)
-        .then((response) => response.json())
-        .then((count) => {
-          fetch(`${BACKEND_API_URL}/addresses/paged?page=${currentPage}&size=${pageSize}`)
+        fetch(`${BACKEND_API_URL}/addresses/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalAddresses(count);
+            setTotalAddresses(1000000);
             setAddresses(data);
             setLoading(false);
           });
-        })
-        .catch((error) => {
-          console.error(error);
-          setLoading(false);
-        });
+        
       };
       fetchAddresses();
     }, [currentPage, pageSize]);

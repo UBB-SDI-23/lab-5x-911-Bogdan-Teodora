@@ -40,21 +40,13 @@ export const CarsShowAll = () => {
       setLoading(true);
   
       const fetchCars = () => {
-        fetch(`${BACKEND_API_URL}/cars/countAll`)
-        .then((response) => response.json())
-        .then((count) => {
-          fetch(`${BACKEND_API_URL}/cars/paged?page=${currentPage}&size=${pageSize}`)
+        fetch(`${BACKEND_API_URL}/cars/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalCars(count);
+            setTotalCars(1000000);
             setCars(data);
             setLoading(false);
           });
-        })
-        .catch((error) => {
-          console.error(error);
-          setLoading(false);
-        });
       };
       fetchCars();
     }, [currentPage, pageSize]);
