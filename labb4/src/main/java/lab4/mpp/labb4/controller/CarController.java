@@ -47,7 +47,7 @@ class CarController {
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         PageRequest pr = PageRequest.of(page, size);
-        return carService.findByPublished(pr);
+        return carService.allPaged(pr);
     }
     // end::get-aggregate-root[]
 

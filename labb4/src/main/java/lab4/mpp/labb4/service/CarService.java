@@ -62,14 +62,13 @@ class CarService {
     }
     // end::get-aggregate-root[]
 
-    public List<CarDTO> findByPublished(PageRequest pr) {
+    public List<CarDTO> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
-        //List<RecordLable> recordLables = rLrepo.findAll();
         Page<Car> cars = repository.findAll(pr);
-        List<CarDTO> carsDTOS = cars.stream()
-                .map(recordLable -> modelMapper.map(recordLable, CarDTO.class))
+        List<CarDTO> carsDTOs = cars.stream()
+                .map(car -> modelMapper.map(car, CarDTO.class))
                 .collect(Collectors.toList());
-        return carsDTOS;
+        return carsDTOs;
     }
 
     public Car newCar( Car newCar) {
