@@ -40,10 +40,10 @@ export const CarsShowAll = () => {
       setLoading(true);
 
       const fetchRecLbl = () => {
-        fetch(`http://localhost:8080/cars/countAll`)
+        fetch(`${BACKEND_API_URL}/cars/countAll`)
         .then((response) => response.json())
         .then((count) => {
-          fetch(`http://localhost:8080/cars/page/${currentPage}/size/${pageSize}`)
+          fetch(`${BACKEND_API_URL}/cars/page/${currentPage}/size/${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
             setTotalCars(count);
