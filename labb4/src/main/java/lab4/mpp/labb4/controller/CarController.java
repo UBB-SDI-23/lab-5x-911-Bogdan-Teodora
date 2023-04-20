@@ -46,7 +46,8 @@ class CarController {
     public List<CarDTO> AllPaged(
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
-        return carService.findByPublished(page,size);
+        PageRequest pr = PageRequest.of(page, size);
+        return carService.findByPublished(pr);
     }
     // end::get-aggregate-root[]
 
@@ -117,8 +118,15 @@ class CarController {
 
     //all the cars ordered by the average booking's price
     @GetMapping("/cars/statistics")
-    public List<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice() {
-        return carService.getAllCarsOrderByAvgBookingPrice();
+    public Page<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                                                @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        PageRequest pr = PageRequest.of(page, size);
+        return carService.getAllCarsOrderByAvgBookingPrice(pr);
+    }
+    @GetMapping("/cars/countAll")
+    public Long countAllCars()
+    {
+        return this.carService.countAllCars();
     }
 }
 

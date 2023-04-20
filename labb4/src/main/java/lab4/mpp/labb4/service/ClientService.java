@@ -1,17 +1,14 @@
 package lab4.mpp.labb4.service;
 
-import jakarta.validation.Valid;
 import lab4.mpp.labb4.app.ClientNotFoundException;
 import lab4.mpp.labb4.domain.*;
 import lab4.mpp.labb4.repo.AddressRepository;
 import lab4.mpp.labb4.repo.BookingRepository;
 import lab4.mpp.labb4.repo.ClientRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,6 +49,17 @@ class ClientService {
     }
     // end::get-aggregate-root[]
 
+    public List<ClientDTO> allClientsPaged(PageRequest pr) {
+        ModelMapper modelMapper = new ModelMapper();
+        //List<RecordLable> recordLables = rLrepo.findAll();
+        Page<Client> clients = repository.findAll(pr);
+        modelMapper.typeMap(Client.class,ClientDTO.class).addMapping(client -> client.getAddress().getAddress_id(),ClientDTO::setAddressID);
+        List<ClientDTO> clientsDTOs = clients.stream()
+                .map(client -> modelMapper.map(client, ClientDTO.class))
+                .collect(Collectors.toList());
+        return clientsDTOs;
+    }
+
     public Client newClient(Client newClient, Long addressId) {
 //        return repository.save(newClient);
         Address address=addrRepo.findById(addressId).get();
@@ -59,6 +67,10 @@ class ClientService {
         //newAdoption.getAdoptionCustomers().isEmpty();
         newClient=repository.save(newClient);
         return newClient;
+    }
+
+    public Client addClient( Client newClient) {
+        return repository.save(newClient);
     }
 
 //    @PostMapping("/clients/{clientId}/bookings")
@@ -133,7 +145,23 @@ class ClientService {
 //        return clientDTO1MB;
     }
 
+    public ClientDTO oneClient(String id){
+        Long clientId = Long.parseLong(id);
+        if (repository.findById(clientId).isEmpty())
+            throw new ClientNotFoundException(clientId);
 
+        Client client=repository.findById(clientId).get();
+        ClientDTO clientDTO=new ClientDTO();
+        clientDTO.setAddressID(client.getAddress().getAddress_id());
+        clientDTO.setIdClient(client.getId());
+        clientDTO.setEmail_address(client.getEmail_address());
+        clientDTO.setPhoneNR(client.getPhoneNR());
+        clientDTO.setDateOfBirth(client.getDateOfBirth());
+        clientDTO.setFName(client.getFName());
+        clientDTO.setLName(client.getLName());
+
+        return  clientDTO;
+    }
 
     public Client replaceClient( Client newClient, Long id) {
 
@@ -176,6 +204,10 @@ class ClientService {
         }
         clientsStatistics.sort(Comparator.comparingDouble(ClientsDTOStatisticsCars::getAvgCarNrKilometers).reversed());
         return clientsStatistics;
+    }
+
+    public Long countAllClients() {
+        return repository.count();
     }
 
 //    @ExceptionHandler(MethodArgumentNotValidException.class)

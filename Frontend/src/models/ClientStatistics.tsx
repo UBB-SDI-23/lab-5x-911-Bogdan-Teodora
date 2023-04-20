@@ -1,9 +1,9 @@
-export interface Clients{
+export interface ClientStatistics{
     idClient : number;
     phoneNR : string;
     email_address : string;
     dateOfBirth : string;
-    lname :string;
+    avgCarNrKilometers : number;
     fname : string;
-    addressID : number;
+    lname :string;
 }

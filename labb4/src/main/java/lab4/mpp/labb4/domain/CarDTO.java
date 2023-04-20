@@ -3,6 +3,7 @@ package lab4.mpp.labb4.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class CarDTO {
     private  Long id;
@@ -35,6 +36,19 @@ public class CarDTO {
         this.nrkilometers = nrkilometers;
         this.description= description;
     }
+
+//    public static CarDTO fromManufacturer(Car manufacturer){
+//        return new CarDTO(
+//                manufacturer.getId(),
+//                manufacturer.getModel(),
+//                manufacturer.getBrand(),
+//                manufacturer.getColor(),
+//                manufacturer.getYear_manufacture(),
+//                manufacturer.getNrkilometers(),
+//                manufacturer.getDescription(),
+//                manufacturer.getBookingDetailsSet().stream().map(BookingDetails::getId).collect(Collectors.toList())
+//        );
+//    }
 
 //    public List<BookingDTOWithID> getBookings() {
 //        return bookings;

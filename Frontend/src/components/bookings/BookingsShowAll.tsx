@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"; 
-import { Car } from "../../models/Car";
 
 import {
 	TableContainer,
@@ -26,28 +25,29 @@ import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 import { Clients } from "../../models/Client";
 import { Address } from "../../models/Address";
+import { BookingDetails } from "../../models/BookingDetails";
 
 const PAGE_SIZE = 100;
-export const CarsShowAll = () => {
+export const BookingsShowAll = () => {
     const [loading, setLoading] = useState(false);
-    const [car, setCars] = useState<Car[]>([]);
+    const [bookings, setBookings] = useState<BookingDetails[]>([]);
     const [pageSize, setPageSize] = useState(100);
-    const [totalCars, setTotalCars] =useState(0)
+    const [totalBookings, setTotalBookings] =useState(0)
     const [currentPage, setCurrentPage]=useState(0)
   
   
     useEffect(() => {
       setLoading(true);
   
-      const fetchCars = () => {
-        fetch(`${BACKEND_API_URL}/cars/countAll`)
+      const fetchBookings = () => {
+        fetch(`${BACKEND_API_URL}/bookings/countAll`)
         .then((response) => response.json())
         .then((count) => {
-          fetch(`${BACKEND_API_URL}/cars/paged?page=${currentPage}&size=${pageSize}`)
+          fetch(`${BACKEND_API_URL}/bookings/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalCars(count);
-            setCars(data);
+            setTotalBookings(count);
+            setBookings(data);
             setLoading(false);
           });
         })
@@ -56,7 +56,7 @@ export const CarsShowAll = () => {
           setLoading(false);
         });
       };
-      fetchCars();
+      fetchBookings();
     }, [currentPage, pageSize]);
   
     
@@ -71,30 +71,30 @@ export const CarsShowAll = () => {
       setCurrentPage(currentPage+1);
     };
 
-    const sortCars = () => {
-        const sortedCar = [...car].sort((a: Car, b: Car) => {
-            if (a.nrkilometers < b.nrkilometers) {
+    const sortBookings = () => {
+        const sortedBooking = [...bookings].sort((a: BookingDetails, b: BookingDetails) => {
+            if (a.amount < b.amount) {
                 return -1;
             }
-            if (a.nrkilometers > b.nrkilometers) {
+            if (a.amount > b.amount) {
                 return 1;
             }
             return 0;
         })
-        console.log(sortedCar);
-        setCars(sortedCar);
+        console.log(sortedBooking);
+        setBookings(sortedBooking);
     }
   
     return (
       <Container>
-        <h1>All Cars</h1>
+        <h1>All Booking details</h1>
   
         {loading && <CircularProgress />}
-        {!loading && car.length === 0 && <p>No cars found</p>}
+        {!loading && bookings.length === 0 && <p>No booking details found</p>}
         {!loading && (
           <div style={{display:'flex', alignItems:'center'}}>
-            <IconButton component={Link} sx={{marginRight: 0 }} to={`/cars/add`}>
-              <Tooltip title="Add a new car" arrow>
+            <IconButton component={Link} sx={{marginRight: 0 }} to={`/bookings/add`}>
+              <Tooltip title="Add a new booking detail" arrow>
                 <AddIcon color="primary" />
               </Tooltip>
             </IconButton>
@@ -102,8 +102,8 @@ export const CarsShowAll = () => {
         )}
 
         {!loading && (
-                <Button sx={{color:"black"}} onClick={sortCars} >
-                    Sort cars by number of kilometers
+                <Button sx={{color:"black"}} onClick={sortBookings} >
+                    Sort bookings by price
                 </Button>
             )}
   
@@ -122,54 +122,56 @@ export const CarsShowAll = () => {
                    </Button>
   
                    <Box mx={2} display="flex" alignItems="center">
-                    Page {currentPage+1} of {Math.ceil(totalCars/pageSize)}
+                    Page {currentPage+1} of {Math.ceil(totalBookings/pageSize)}
                    </Box>
               </div>
               )}
         
   
-        {!loading && car.length > 0 && (
+        {!loading && bookings.length > 0 && (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                <TableCell>#</TableCell>IdCar
-                  <TableCell align="right">Model</TableCell>
-                  <TableCell align="center">Brand</TableCell>
-                  <TableCell align="center">Color</TableCell>
-                  <TableCell align="center">Year of manufacture</TableCell>
-                  <TableCell align="center">Number of kilometers</TableCell>
-                  <TableCell align="right">Description</TableCell>
-
-
+                <TableCell>#</TableCell>IdBooking
+                  <TableCell align="right">Start Date</TableCell>
+                  <TableCell align="center">Return Date</TableCell>
+                  <TableCell align="center">Amount</TableCell>
+                  <TableCell align="center">Booking Status</TableCell>
+                  <TableCell align="center">Drop Location</TableCell>
+                  <TableCell align="center">Pickup Location</TableCell>
+                  <TableCell align="right">Client Id</TableCell>
+                  <TableCell align="right">Car Id</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-              {car.map((cars:Car, index) => (
+              {bookings.map((booking:BookingDetails, index) => (
                     <TableRow key={index}>
                       
                       <TableCell component="th" scope="row">
                         {index + 1}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        <Link to={`/cars/${cars.id}/details`} title="View cars details">
-                          {cars.id}
+                        <Link to={`/bookings/${booking.idBooking}/details`} title="View booking details">
+                          {booking.idBooking}
                         </Link>
                     </TableCell>
   
-                    <TableCell align="right">{cars.model}</TableCell>
-                    <TableCell align="center">{cars.brand}</TableCell>
-                    <TableCell align="center">{cars.color}</TableCell>
-                    <TableCell align="center">{cars.year_manufacture}</TableCell>
-                    <TableCell align="center">{cars.nrkilometers}</TableCell>
-                    <TableCell align="right">{cars.description}</TableCell>
-                    
+                    <TableCell align="right">{booking.startDate}</TableCell>
+                    <TableCell align="right">{booking.returnDate}</TableCell>
+                    <TableCell align="right">{booking.amount}</TableCell>
+                    <TableCell align="right">{booking.bookingStatus}</TableCell>
+                    <TableCell align="right">{booking.drop_loc}</TableCell>
+                    <TableCell align="right">{booking.pickup_loc}</TableCell>
+                    <TableCell align="right">{booking.clientId}</TableCell>
+                    <TableCell align="right">{booking.carId}</TableCell>
+
                     <TableCell align="right">
                     <IconButton
                           component={Link}
                           sx={{ mr: 3 }}
-                          to={`/cars/${cars.id}/details`}>
-                          <Tooltip title="View cars details" arrow>
+                          to={`/bookings/${booking.idBooking}/details`}>
+                          <Tooltip title="View booking details" arrow>
                             <ReadMoreIcon color="primary" />
                           </Tooltip>
                         </IconButton>
@@ -177,8 +179,8 @@ export const CarsShowAll = () => {
                       <IconButton
                         component={Link}
                         sx={{ mr: 3 }}
-                        to={`/cars/${cars.id}/edit`}
-                        title="Edit car details"
+                        to={`/bookings/${booking.idBooking}/edit`}
+                        title="Edit booking details"
                       >
                         <EditIcon />
                       </IconButton>
@@ -186,8 +188,8 @@ export const CarsShowAll = () => {
                       <IconButton
                         component={Link}
                         sx={{ mr: 3 }}
-                        to={`/cars/${cars.id}/delete`}
-                        title="Delete car"
+                        to={`/bookings/${booking.idBooking}/delete`}
+                        title="Delete booking"
                       >
                         <DeleteForeverIcon sx={{ color: "red" }} />
                       </IconButton>

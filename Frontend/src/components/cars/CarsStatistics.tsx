@@ -13,6 +13,8 @@ import {
 	Container,
 	IconButton,
 	Tooltip,
+  Box,
+  Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
@@ -20,21 +22,50 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
+import { Clients } from "../../models/Client";
 
 
 export const CarsStatistics = () => {
     const [loading, setLoading]=useState(false);
-    const [cars, setCars] = useState([]);
+    const [cars, setCars] = useState<CarStatistics[]>([]);
+    const [pageSize, setPageSize] = useState(100);
+    const [totalCars, setTotalCars] =useState(0)
+    const [currentPage, setCurrentPage]=useState(0)
+
   
-    useEffect(() =>{   
-      fetch(`${BACKEND_API_URL}/cars/statistics`)
-          .then((res) => res.json())
+    useEffect(() => {
+      setLoading(true);
+  
+      const fetchClients = () => {
+        fetch(`${BACKEND_API_URL}/singers/countAll`)
+        .then((response) => response.json())
+        .then((count) => {
+          fetch(`${BACKEND_API_URL}/cars/statistics?page=${currentPage}&size=${pageSize}`)
+          .then((response) => response.json())
           .then((data) => {
-                setCars(data),
-                setLoading(false);
-                      
-                  });
-      }, []);  
+            setTotalCars(count);
+            setCars(data);
+            setLoading(false);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+        });
+      };
+      fetchClients();
+    }, [currentPage, pageSize]);
+      
+      const handlePreviousPage = () => {
+        if(currentPage>0)
+        {
+          setCurrentPage(currentPage-1);
+        }
+      };
+    
+      const handleNextPage = () => {
+        setCurrentPage(currentPage+1);
+      };
 
       return (
         <Container>
@@ -51,6 +82,27 @@ export const CarsStatistics = () => {
             </IconButton>
                     </div>
           )} */}
+
+            {!loading && (
+              <div style ={{display: "flex", alignItems:"center"}}>
+                 
+                  <Button
+                    sx={{color:"black"}}
+                    disabled={currentPage===0}
+                    onClick={handlePreviousPage}>
+                      Previous Page
+                  </Button>
+                  <Button
+                   sx={{color:"black"}} onClick={handleNextPage}>
+                    Next Page
+                   </Button>
+  
+                   <Box mx={2} display="flex" alignItems="center">
+                    Page {currentPage+1} of {Math.ceil(totalCars/pageSize)}
+                   </Box>
+              </div>
+              )}
+
           {!loading && cars.length > 0 && (
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -95,6 +147,16 @@ export const CarsStatistics = () => {
               </Table>
             </TableContainer>
           )}
+          <Button
+            sx={{color:"black"}}
+            disabled={currentPage===0}
+            onClick={handlePreviousPage}>
+              Previous Page
+            </Button>
+  
+          <Button sx={{color:"black"}} onClick={handleNextPage}>
+            Next Page
+          </Button>
         </Container>
       );
   }

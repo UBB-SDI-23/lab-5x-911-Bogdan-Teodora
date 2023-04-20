@@ -7,6 +7,7 @@ import lab4.mpp.labb4.repo.*;
 import lab4.mpp.labb4.service.ClientService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +48,22 @@ class ClientController {
     }
     // end::get-aggregate-root[]
 
+    @GetMapping("/clients/paged")
+    public List<ClientDTO> AllPaged(
+            @RequestParam int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        PageRequest pr = PageRequest.of(page, size);
+        return clientService.allClientsPaged(pr);
+    }
+
     @PostMapping("/clients/{addressId}")
     Client newClient(@Valid @RequestBody Client newClient,@PathVariable Long addressId) {
         return clientService.newClient(newClient, addressId);
+    }
+
+    @PostMapping("/clients/add")
+    Client addClient(@RequestBody Client newClient) {
+        return clientService.addClient(newClient);
     }
 
 //    @PostMapping("/clients/{clientId}/bookings")
@@ -96,14 +110,19 @@ class ClientController {
         return clientService.one(id);
     }
 
+    @GetMapping("/clients/{id}/details")
+    ClientDTO oneClient (@PathVariable String id){
+        return clientService.oneClient(id);
+    }
 
 
-    @PutMapping("/clients/{id}")
+
+    @PutMapping("/clients/{id}/edit")
     Client replaceClient(@RequestBody Client newClient, @PathVariable Long id) {
         return clientService.replaceClient(newClient,id);
     }
 
-    @DeleteMapping("/clients/{id}")
+    @DeleteMapping("/clients/{id}/delete")
     void deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
     }
@@ -124,6 +143,12 @@ class ClientController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    @GetMapping("/clients/countAll")
+    public Long countAllClients()
+    {
+        return this.clientService.countAllClients();
     }
 
 }

@@ -7,6 +7,8 @@ import lab4.mpp.labb4.repo.CarRepository;
 import lab4.mpp.labb4.repo.ClientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -48,6 +50,18 @@ class BookingDetailsService {
     }
     // end::get-aggregate-root[]
 
+    public List<BookingDTOWithID> allPaged(PageRequest pr) {
+        ModelMapper modelMapper = new ModelMapper();
+        //List<RecordLable> recordLables = rLrepo.findAll();
+        Page<BookingDetails> bookingDetails = repository.findAll(pr);
+        modelMapper.typeMap(BookingDetails.class,BookingDTOWithID.class).addMapping(client -> client.getCar().getId(),BookingDTOWithID::setCarId);
+        modelMapper.typeMap(BookingDetails.class,BookingDTOWithID.class).addMapping(client -> client.getClient().getId(),BookingDTOWithID::setClientId);
+        List<BookingDTOWithID> clientsDTOs = bookingDetails.stream()
+                .map(client -> modelMapper.map(client, BookingDTOWithID.class))
+                .collect(Collectors.toList());
+        return clientsDTOs;
+    }
+
     public BookingDetails newBooking( BookingDetails newBooking,  Long clientId, @PathVariable Long carId) {
         //return repository.save(newBooking);
         Client client = clientRepository.findById(clientId).get();
@@ -59,6 +73,23 @@ class BookingDetailsService {
         client.getBookingDetailsSet().add(newBooking);
         car.getBookingDetailsSet().add(newBooking);
         return newBooking;
+    }
+
+    public BookingDetails addBooking( BookingDTOWithID newBooking) {
+        BookingDTOWithID newB = new BookingDTOWithID();
+        BookingDetails ac = new BookingDetails();
+        ac.setAmount(newBooking.getAmount());
+        ac.setDrop_loc(newBooking.getDrop_loc());
+        ac.setPickup_loc(newBooking.getPickup_loc());
+        ac.setStartDate(newBooking.getStartDate());
+        ac.setReturnDate(newBooking.getReturnDate());
+        ac.setBookingStatus(newBooking.getBookingStatus());
+        Car selectedCar=carRepository.findById(newBooking.getCarId()).get();
+        ac.setCar(selectedCar);
+        Client selectedClient=clientRepository.findById(newBooking.getClientId()).get();
+        ac.setClient(selectedClient);
+        ac=repository.save(ac);
+        return ac;
     }
 
     public List<BookingDetails> newClientCarList( List<BookingDTOWithID> BookingDetList, Long carId) {
@@ -102,6 +133,17 @@ class BookingDetailsService {
         return  modelMapper.map(adoptionCustomer, BookingDTO.class);
     }
 
+    public BookingDTOWithID oneBooking( Long id) {
+        if (repository.findById(id).isEmpty())
+            throw new BookingNotFoundException(id);
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(BookingDetails.class, BookingDTOWithID.class);
+
+        BookingDetails adoptionCustomer=repository.findById(id).get();
+        return  modelMapper.map(adoptionCustomer, BookingDTOWithID.class);
+    }
+
     public BookingDetails replaceBooking( BookingDetails newBooking, Long id) {
 
         return repository.findById(id)
@@ -127,6 +169,10 @@ class BookingDetailsService {
 
     public List<BookingDetails> byAmount( int minAmount) {
         return repository.findByAmountGreaterThanEqual(minAmount);
+    }
+
+    public Long countAllBookings() {
+        return repository.count();
     }
 }
 

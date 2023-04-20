@@ -5,9 +5,8 @@ export const AppHome = () => {
 	return (
 		<React.Fragment>
 			<CssBaseline />
-
-			<Container maxWidth="xl">
-				<Typography variant="h3" component="h3" gutterBottom>
+			<Container maxWidth="xl" >
+				<Typography variant="h4" component="h4" gutterBottom>
 					Welcome to the app! Use the menu above to navigate.
 				</Typography>
 			</Container>

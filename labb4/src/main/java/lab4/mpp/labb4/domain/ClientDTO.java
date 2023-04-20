@@ -9,7 +9,7 @@ public class ClientDTO {
     private String phoneNR;
     private String email_address;
     private String dateOfBirth;
-    private Long address_id;
+    private Long addressID;
 //    private AddressDTO addressDTO;
 
     public ClientDTO(String FName, String LName, String phoneNR, String address, String dateOfBirth, AddressDTO addressDTO) {
@@ -35,11 +35,11 @@ public class ClientDTO {
 
 
     public Long getAddressID() {
-        return address_id;
+        return addressID;
     }
 
     public void setAddressID(Long addressID) {
-        this.address_id = addressID;
+        this.addressID = addressID;
     }
 
     public Long getIdClient() {

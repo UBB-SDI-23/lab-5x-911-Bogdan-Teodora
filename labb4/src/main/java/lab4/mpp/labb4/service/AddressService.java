@@ -3,9 +3,13 @@ package lab4.mpp.labb4.service;
 import lab4.mpp.labb4.app.AddressNotFoundException;
 import lab4.mpp.labb4.domain.Address;
 import lab4.mpp.labb4.domain.AddressDTO;
+import lab4.mpp.labb4.domain.Car;
+import lab4.mpp.labb4.domain.CarDTO;
 import lab4.mpp.labb4.repo.AddressRepository;
 import lab4.mpp.labb4.repo.ClientRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +36,15 @@ class AddressService {
         return passengers.stream()
                 .map(addr -> modelMapper.map(addr, AddressDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public List<AddressDTO> allPaged(PageRequest pr) {
+        ModelMapper modelMapper = new ModelMapper();
+        Page<Address> addresses = repository.findAll(pr);
+        List<AddressDTO> addressesDTOs = addresses.stream()
+                .map(addr -> modelMapper.map(addr, AddressDTO.class))
+                .collect(Collectors.toList());
+        return addressesDTOs;
     }
     // end::get-aggregate-root[]
 
@@ -66,6 +79,11 @@ class AddressService {
         }
         repository.deleteById(id);
     }
+
+    public Long countAllAddresses() {
+        return repository.count();
+    }
+
 
 //    @GetMapping("/cars/nrKilometers/{minNrKilometers}")
 //    List<Car> byNrKilometers(@PathVariable int minNrKilometers) {

@@ -1,6 +1,6 @@
 export interface Address{
     address_id : number;
-    contry : string;
+    country : string;
     county : string;
     city : string;
     additional_info : string;

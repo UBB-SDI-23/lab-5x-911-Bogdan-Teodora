@@ -25,29 +25,28 @@ import AddIcon from "@mui/icons-material/Add";
 import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 import { Clients } from "../../models/Client";
-import { Address } from "../../models/Address";
 
 const PAGE_SIZE = 100;
-export const CarsShowAll = () => {
+export const ClientsShowAll = () => {
     const [loading, setLoading] = useState(false);
-    const [car, setCars] = useState<Car[]>([]);
+    const [clients, setClients] = useState<Clients[]>([]);
     const [pageSize, setPageSize] = useState(100);
-    const [totalCars, setTotalCars] =useState(0)
+    const [totalClients, setTotalClients] =useState(0)
     const [currentPage, setCurrentPage]=useState(0)
   
   
     useEffect(() => {
       setLoading(true);
   
-      const fetchCars = () => {
-        fetch(`${BACKEND_API_URL}/cars/countAll`)
+      const fetchClients = () => {
+        fetch(`${BACKEND_API_URL}/clients/countAll`)
         .then((response) => response.json())
         .then((count) => {
-          fetch(`${BACKEND_API_URL}/cars/paged?page=${currentPage}&size=${pageSize}`)
+          fetch(`${BACKEND_API_URL}/clients/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalCars(count);
-            setCars(data);
+            setTotalClients(count);
+            setClients(data);
             setLoading(false);
           });
         })
@@ -56,7 +55,7 @@ export const CarsShowAll = () => {
           setLoading(false);
         });
       };
-      fetchCars();
+      fetchClients();
     }, [currentPage, pageSize]);
   
     
@@ -71,41 +70,35 @@ export const CarsShowAll = () => {
       setCurrentPage(currentPage+1);
     };
 
-    const sortCars = () => {
-        const sortedCar = [...car].sort((a: Car, b: Car) => {
-            if (a.nrkilometers < b.nrkilometers) {
+    const sortClients = () => {
+        const sortedClients = [...clients].sort((a: Clients, b: Clients) => {
+            if (a.lname < b.lname) {
                 return -1;
             }
-            if (a.nrkilometers > b.nrkilometers) {
+            if (a.lname > b.lname) {
                 return 1;
             }
             return 0;
         })
-        console.log(sortedCar);
-        setCars(sortedCar);
+        console.log(sortedClients);
+        setClients(sortedClients);
     }
   
     return (
       <Container>
-        <h1>All Cars</h1>
+        <h1>All clients</h1>
   
         {loading && <CircularProgress />}
-        {!loading && car.length === 0 && <p>No cars found</p>}
+        {!loading && clients.length === 0 && <p>No clients found</p>}
         {!loading && (
           <div style={{display:'flex', alignItems:'center'}}>
-            <IconButton component={Link} sx={{marginRight: 0 }} to={`/cars/add`}>
-              <Tooltip title="Add a new car" arrow>
+            <IconButton component={Link} sx={{marginRight: 0 }} to={`/clients/add`}>
+              <Tooltip title="Add a new client" arrow>
                 <AddIcon color="primary" />
               </Tooltip>
             </IconButton>
           </div>
         )}
-
-        {!loading && (
-                <Button sx={{color:"black"}} onClick={sortCars} >
-                    Sort cars by number of kilometers
-                </Button>
-            )}
   
         {!loading && (
               <div style ={{display: "flex", alignItems:"center"}}>
@@ -122,54 +115,56 @@ export const CarsShowAll = () => {
                    </Button>
   
                    <Box mx={2} display="flex" alignItems="center">
-                    Page {currentPage+1} of {Math.ceil(totalCars/pageSize)}
+                    Page {currentPage+1} of {Math.ceil(totalClients/pageSize)}
                    </Box>
               </div>
               )}
-        
+        {!loading && (
+                <Button sx={{color:"black"}} onClick={sortClients} >
+                    Sort clients by last name
+                </Button>
+            )}
   
-        {!loading && car.length > 0 && (
+        {!loading && clients.length > 0 && (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                 <TableCell>#</TableCell>IdCar
-                  <TableCell align="right">Model</TableCell>
-                  <TableCell align="center">Brand</TableCell>
-                  <TableCell align="center">Color</TableCell>
-                  <TableCell align="center">Year of manufacture</TableCell>
-                  <TableCell align="center">Number of kilometers</TableCell>
-                  <TableCell align="right">Description</TableCell>
-
-
+                  <TableCell align="right">Phone Number</TableCell>
+                  <TableCell align="right">Email Address</TableCell>
+                  <TableCell align="center">Date Of Birth</TableCell>
+                  <TableCell align="center">Address Id</TableCell>
+                  <TableCell align="right">First Name</TableCell>
+                  <TableCell align="right">Last Name</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-              {car.map((cars:Car, index) => (
+              {clients.map((client:Clients, index) => (
                     <TableRow key={index}>
                       
                       <TableCell component="th" scope="row">
                         {index + 1}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        <Link to={`/cars/${cars.id}/details`} title="View cars details">
-                          {cars.id}
+                        <Link to={`/clients/${client.idClient}/details`} title="View client details">
+                          {client.idClient}
                         </Link>
                     </TableCell>
   
-                    <TableCell align="right">{cars.model}</TableCell>
-                    <TableCell align="center">{cars.brand}</TableCell>
-                    <TableCell align="center">{cars.color}</TableCell>
-                    <TableCell align="center">{cars.year_manufacture}</TableCell>
-                    <TableCell align="center">{cars.nrkilometers}</TableCell>
-                    <TableCell align="right">{cars.description}</TableCell>
+                    <TableCell align="right">{client.phoneNR}</TableCell>
+                    <TableCell align="right">{client.email_address}</TableCell>
+                    <TableCell align="right">{client.dateOfBirth}</TableCell>
+                    <TableCell align="right">{client.addressID}</TableCell>
+                    <TableCell align="right">{client.fname}</TableCell>
+                    <TableCell align="right">{client.lname}</TableCell>
                     
                     <TableCell align="right">
                     <IconButton
                           component={Link}
                           sx={{ mr: 3 }}
-                          to={`/cars/${cars.id}/details`}>
-                          <Tooltip title="View cars details" arrow>
+                          to={`/clients/${client.idClient}/details`}>
+                          <Tooltip title="View client details" arrow>
                             <ReadMoreIcon color="primary" />
                           </Tooltip>
                         </IconButton>
@@ -177,8 +172,8 @@ export const CarsShowAll = () => {
                       <IconButton
                         component={Link}
                         sx={{ mr: 3 }}
-                        to={`/cars/${cars.id}/edit`}
-                        title="Edit car details"
+                        to={`/clients/${client.idClient}/edit`}
+                        title="Edit client details"
                       >
                         <EditIcon />
                       </IconButton>
@@ -186,8 +181,8 @@ export const CarsShowAll = () => {
                       <IconButton
                         component={Link}
                         sx={{ mr: 3 }}
-                        to={`/cars/${cars.id}/delete`}
-                        title="Delete car"
+                        to={`/clients/${client.idClient}/delete`}
+                        title="Delete client"
                       >
                         <DeleteForeverIcon sx={{ color: "red" }} />
                       </IconButton>

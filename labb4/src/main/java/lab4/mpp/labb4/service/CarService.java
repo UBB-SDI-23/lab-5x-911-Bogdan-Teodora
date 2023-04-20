@@ -1,10 +1,16 @@
 package lab4.mpp.labb4.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import lab4.mpp.labb4.app.CarNotFoundException;
 import lab4.mpp.labb4.domain.*;
 import lab4.mpp.labb4.repo.BookingRepository;
 import lab4.mpp.labb4.repo.CarRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,6 +28,8 @@ class CarService {
     private final CarRepository repository;
 
     private final BookingRepository bookingRepo;
+    @PersistenceContext
+    private EntityManager em;
 
     public CarService(CarRepository repository, BookingRepository bookingRepo) {
         this.repository = repository;
@@ -54,17 +62,14 @@ class CarService {
     }
     // end::get-aggregate-root[]
 
-    public List<CarDTO> findByPublished(int page, int size) {
-            ModelMapper modelMapper = new ModelMapper();
-            modelMapper.typeMap(Car.class, CarDTO.class);
-            //PageRequest pageRequest = PageRequest.of(0,50);
-            Pageable paging = PageRequest.of(page, size);
-            List<CarDTO> carDTOS = repository.findAll(paging).stream()
-                    .map(car->modelMapper.map(car,CarDTO.class))
-                    .collect(Collectors.toList());
-
-
-            return carDTOS;
+    public List<CarDTO> findByPublished(PageRequest pr) {
+        ModelMapper modelMapper = new ModelMapper();
+        //List<RecordLable> recordLables = rLrepo.findAll();
+        Page<Car> cars = repository.findAll(pr);
+        List<CarDTO> carsDTOS = cars.stream()
+                .map(recordLable -> modelMapper.map(recordLable, CarDTO.class))
+                .collect(Collectors.toList());
+        return carsDTOS;
     }
 
     public Car newCar( Car newCar) {
@@ -181,7 +186,7 @@ class CarService {
     }
 
     //all the cars ordered by the average booking's price
-    public List<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice() {
+    public Page<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice(PageRequest pageable) {
         List<Car> cars = repository.findAll();
         List<CarsDTOStatisticsBookingPrice> carsDTOStatisticsBookingsPrices = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
@@ -199,7 +204,43 @@ class CarService {
             carsDTOStatisticsBookingsPrices.add(carsDTOStatisticsBookingPrice);
         }
         carsDTOStatisticsBookingsPrices.sort(Comparator.comparingDouble(CarsDTOStatisticsBookingPrice::getAgvBookingPrice).reversed());
-        return carsDTOStatisticsBookingsPrices;
+        return new PageImpl<>(carsDTOStatisticsBookingsPrices, pageable, cars.size());
     }
+
+    public Long countAllCars() {
+        return repository.count();
+    }
+
+
+//    public Page<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPricePaged(Pageable pageable) {
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
+//        Root<Car> cars = cq.from(Car.class);
+//        Join<Car, BookingDetails> carBookingsJoin = cars.join("booking_details", JoinType.LEFT);
+//        cq
+//                .multiselect(cars, cb.count(carBookingsJoin))
+//                .groupBy(cars)
+//                .orderBy(cb.desc(cb.count(carBookingsJoin)));
+//        TypedQuery<Object[]> typedQuery = em.createQuery(cq);
+//
+//
+//        List<CarsDTOStatisticsBookingPrice> results = typedQuery
+//                .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
+//                .setMaxResults(pageable.getPageSize())
+//                .getResultStream()
+//                .map(row -> {
+//                    return new CarsDTOStatisticsBookingPrice(
+//                            CarDTO.((Car) row[0]),
+//                            ((Long) row[1]).intValue()
+//                    );
+//                })
+//                .toList();
+//
+//        CriteriaQuery<Long> count_cq = cb.createQuery(Long.class);
+//        count_cq.select(cb.count(count_cq.from(Car.class)));;
+//        long total = em.createQuery(count_cq).getSingleResult();
+//
+//        return new PageImpl<>(results, pageable, total);
+//    }
 }
 

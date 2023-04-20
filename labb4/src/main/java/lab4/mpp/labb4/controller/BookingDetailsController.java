@@ -6,6 +6,7 @@ import lab4.mpp.labb4.repo.*;
 import lab4.mpp.labb4.service.BookingDetailsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -38,6 +39,14 @@ class BookingDetailsController {
     List<BookingDTOWithID> all() {
         return service.all();
     }
+
+    @GetMapping("/bookings/paged")
+    public List<BookingDTOWithID> AllPaged(
+            @RequestParam int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        PageRequest pr = PageRequest.of(page, size);
+        return service.allPaged(pr);
+    }
     // end::get-aggregate-root[]
 
     @PostMapping("/bookings/{clientId}/{carId}")
@@ -50,6 +59,11 @@ class BookingDetailsController {
         return service.newClientCarList(BookingDetList,carId);
     }
 
+    @PostMapping("/bookings/add")
+    BookingDetails addBooking(@RequestBody BookingDTOWithID newB) {
+        return service.addBooking(newB);
+    }
+
     // Single item
 
     @GetMapping("/bookings/{id}")
@@ -57,12 +71,19 @@ class BookingDetailsController {
         return service.one(id);
     }
 
-    @PutMapping("/bookings/{id}")
+    @GetMapping("/bookings/{id}/details")
+    BookingDTOWithID oneBooking(@PathVariable String id) {
+        Long clientId = Long.parseLong(id);
+
+        return service.oneBooking(clientId);
+    }
+
+    @PutMapping("/bookings/{id}/edit")
     BookingDetails replaceBooking(@RequestBody BookingDetails newBooking, @PathVariable Long id) {
         return service.replaceBooking(newBooking,id);
     }
 
-    @DeleteMapping("/bookings/{id}")
+    @DeleteMapping("/bookings/{id}/delete")
     void deleteBooking(@PathVariable Long id) {
         service.deleteBooking(id);
     }
@@ -70,6 +91,12 @@ class BookingDetailsController {
     @GetMapping("/bookings/amount/{minAmount}")
     List<BookingDetails> byAmount(@PathVariable int minAmount) {
         return service.byAmount(minAmount);
+    }
+
+    @GetMapping("/bookings/countAll")
+    public Long countAllBookings()
+    {
+        return this.service.countAllBookings();
     }
 }
 
