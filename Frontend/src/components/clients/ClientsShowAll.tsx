@@ -92,7 +92,6 @@ export const ClientsShowAll = () => {
               <Table sx={{ minWidth: 800 }} aria-label="simple table" style={{backgroundColor:"whitesmoke"}}>
                   <TableHead>
                       <TableRow>
-                          <TableCell align="center" style={{color:"#2471A3", fontWeight:'bold'}}>IdCar.</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight:'bold'}}>Phone number</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Email address</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Date of birth</TableCell>
