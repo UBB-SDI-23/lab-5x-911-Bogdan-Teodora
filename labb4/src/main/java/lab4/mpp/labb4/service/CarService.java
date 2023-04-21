@@ -1,9 +1,5 @@
 package lab4.mpp.labb4.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.*;
 import lab4.mpp.labb4.app.CarNotFoundException;
 import lab4.mpp.labb4.domain.*;
 import lab4.mpp.labb4.repo.BookingRepository;
@@ -12,11 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,8 +20,6 @@ class CarService {
     private final CarRepository repository;
 
     private final BookingRepository bookingRepo;
-    @PersistenceContext
-    private EntityManager em;
 
     public CarService(CarRepository repository, BookingRepository bookingRepo) {
         this.repository = repository;
@@ -41,12 +31,10 @@ class CarService {
 //        return repository.findAll();
 
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.typeMap(Car.class, CarDTO.class);
-        PageRequest pageRequest = PageRequest.of(0,50);
-        List<CarDTO> carDTOS = repository.findAll(pageRequest).stream()
-                .map(car->modelMapper.map(car,CarDTO.class))
+        List<Car> passengers = repository.findAll();
+        return passengers.stream()
+                .map(addr -> modelMapper.map(addr, CarDTO.class))
                 .collect(Collectors.toList());
-        return carDTOS;
         //-------------
         //modelMapper.typeMap(Customer.class, CustomerDTO.class).addMapping(Customer::getAddress,CustomerDTO::setAddress);
         //List<Car> customers=repository.findAll();
@@ -65,6 +53,7 @@ class CarService {
     public List<CarDTO> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
         Page<Car> cars = repository.findAll(pr);
+
         List<CarDTO> carsDTOs = cars.stream()
                 .map(car -> modelMapper.map(car, CarDTO.class))
                 .collect(Collectors.toList());
