@@ -32,7 +32,7 @@ export const ClientsShowAll = () => {
   const[loading, setLoading] = useState(true);
   const[clients, setClients] = useState<Clients[]>([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(100);
   const crt = (page - 1) * pageSize + 1;
 
   useEffect(() => {
@@ -89,10 +89,21 @@ export const ClientsShowAll = () => {
 
       {!loading && clients.length > 0 && (
         <>
+          <Button style={{color:"grey"}} disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous Page
+          </Button>
+
+          <Button style={{color:"grey"}}
+          disabled={clients.length < pageSize}
+          onClick={() => setPage(page + 1)}
+          >
+          Next Page
+          </Button>
           <TableContainer component={Paper}>
               <Table sx={{ minWidth: 800 }} aria-label="simple table" style={{backgroundColor:"whitesmoke"}}>
                   <TableHead>
                       <TableRow>
+                      <TableCell align="center" style={{color:"#2471A3", fontWeight:'bold'}}>Details</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight:'bold'}}>Phone number</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Email address</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Date of birth</TableCell>
