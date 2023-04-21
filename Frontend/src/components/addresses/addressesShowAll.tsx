@@ -26,12 +26,13 @@ import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 import { Clients } from "../../models/Client";
 import { Address } from "../../models/Address";
+import { AddressDTO } from "../../models/AddressDTO";
 
 const PAGE_SIZE = 100;
 export const AddressesShowAll = () => {
     const [loading, setLoading] = useState(false);
-    const [address, setAddresses] = useState<Address[]>([]);
-    const [pageSize, setPageSize] = useState(100);
+    const [address, setAddresses] = useState<AddressDTO[]>([]);
+    const [pageSize, setPageSize] = useState(10);
     const [totalAddresses, setTotalAddresses] =useState(0)
     const [currentPage, setCurrentPage]=useState(0)
   
@@ -40,7 +41,7 @@ export const AddressesShowAll = () => {
       setLoading(true);
   
       const fetchAddresses = () => {
-        fetch(`${BACKEND_API_URL}/addresses/paged?page=${currentPage}&size=${pageSize}`)
+        fetch(`http://localhost:8080/addresses/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
             setTotalAddresses(1000000);
@@ -65,7 +66,7 @@ export const AddressesShowAll = () => {
     };
 
     const sortAddresses = () => {
-        const sortedAddr = [...address].sort((a: Address, b: Address) => {
+        const sortedAddr = [...address].sort((a: AddressDTO, b: AddressDTO) => {
             if (a.city < b.city) {
                 return -1;
             }
@@ -129,12 +130,14 @@ export const AddressesShowAll = () => {
                 <TableCell>#</TableCell>IdCar
                   <TableCell align="right">Country</TableCell>
                   <TableCell align="center">County</TableCell>
-                  <TableCell align="center">City</TableCell>
+                  <TableCell align="right">City</TableCell>
                   <TableCell align="right">Additional Info</TableCell>
+                  <TableCell align="right">Nr of clients</TableCell>
+
                 </TableRow>
               </TableHead>
               <TableBody>
-              {address.map((address:Address, index) => (
+              {address.map((address:AddressDTO, index) => (
                     <TableRow key={index}>
                       
                       <TableCell component="th" scope="row">
@@ -150,6 +153,8 @@ export const AddressesShowAll = () => {
                     <TableCell align="right">{address.county}</TableCell>
                     <TableCell align="right">{address.city}</TableCell>
                     <TableCell align="right">{address.additional_info}</TableCell>
+                    <TableCell align="right">{address.noClients}</TableCell>
+
                     
                     <TableCell align="right">
                     <IconButton

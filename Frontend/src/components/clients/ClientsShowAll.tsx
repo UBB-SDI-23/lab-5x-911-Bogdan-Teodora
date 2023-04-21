@@ -32,14 +32,14 @@ export const ClientsShowAll = () => {
   const[loading, setLoading] = useState(true);
   const[clients, setClients] = useState<Clients[]>([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(100);
+  const [pageSize, setPageSize] = useState(10);
   const crt = (page - 1) * pageSize + 1;
 
   useEffect(() => {
     setLoading(true);
 
     const fetchClients = () => {
-      fetch(`${BACKEND_API_URL}/clients/paged?page=${page}&size=${pageSize}`)
+      fetch(`http://localhost:8080/clients/paged?page=${page}&size=${pageSize}`)
         .then((response) => response.json())
         .then((data) => {
           setClients(data);
@@ -110,6 +110,7 @@ export const ClientsShowAll = () => {
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Address Id</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>First name</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Last name</TableCell>
+                          <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>No bookings</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Operations</TableCell>
 
                       </TableRow>
@@ -133,6 +134,7 @@ export const ClientsShowAll = () => {
                               <TableCell align="center">{client.addressID}</TableCell>
                               <TableCell align="center">{client.fname}</TableCell>
                               <TableCell align="center">{client.lname}</TableCell>
+                              <TableCell align="center">{client.noBookings}</TableCell>
                               <TableCell align="center">
 
                   <IconButton component={Link} sx={{ mr: 3 }} to={`/clients/${client.idClient}/edit`}>

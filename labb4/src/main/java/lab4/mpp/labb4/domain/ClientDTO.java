@@ -10,23 +10,27 @@ public class ClientDTO {
     private String email_address;
     private String dateOfBirth;
     private Long addressID;
+
+    private Integer noBookings;
 //    private AddressDTO addressDTO;
 
-    public ClientDTO(String FName, String LName, String phoneNR, String address, String dateOfBirth, AddressDTO addressDTO) {
+    public ClientDTO(String FName, String LName, String phoneNR, String address, String dateOfBirth, AddressDTO addressDTO, Integer noBookings) {
         this.FName = FName;
         this.LName = LName;
         this.phoneNR = phoneNR;
         this.email_address = address;
         this.dateOfBirth = dateOfBirth;
+        this.noBookings = noBookings;
     }
 
-    public ClientDTO(Long idClient, String FName, String LName, String phoneNR, String address, String dateOfBirth, AddressDTO addressDTO) {
+    public ClientDTO(Long idClient, String FName, String LName, String phoneNR, String address, String dateOfBirth, AddressDTO addressDTO, Integer noBookings) {
         this.idClient = idClient;
         this.FName = FName;
         this.LName = LName;
         this.phoneNR = phoneNR;
         this.email_address = address;
         this.dateOfBirth = dateOfBirth;
+        this.noBookings=noBookings;
     }
 
     public ClientDTO() {
@@ -88,6 +92,14 @@ public class ClientDTO {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Integer getNoBookings() {
+        return noBookings;
+    }
+
+    public void setNoBookings(Integer noBookings) {
+        this.noBookings = noBookings;
     }
 
     @Override

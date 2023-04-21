@@ -31,7 +31,7 @@ const PAGE_SIZE = 100;
 export const BookingsShowAll = () => {
     const [loading, setLoading] = useState(false);
     const [bookings, setBookings] = useState<BookingDetails[]>([]);
-    const [pageSize, setPageSize] = useState(100);
+    const [pageSize, setPageSize] = useState(20);
     const [totalBookings, setTotalBookings] =useState(0)
     const [currentPage, setCurrentPage]=useState(0)
   
@@ -41,7 +41,7 @@ export const BookingsShowAll = () => {
   
       const fetchBookings = () => {
         
-          fetch(`${BACKEND_API_URL}/bookings/paged?page=${currentPage}&size=${pageSize}`)
+          fetch(`http://localhost:8080/bookings/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
             setTotalBookings(10000000);

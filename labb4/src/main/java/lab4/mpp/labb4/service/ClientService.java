@@ -8,6 +8,7 @@ import lab4.mpp.labb4.repo.ClientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -51,11 +52,15 @@ class ClientService {
 
     public List<ClientDTO> allClientsPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
-        //List<RecordLable> recordLables = rLrepo.findAll();
-        Page<Client> clients = repository.findAll(pr);
+        Sort sort = Sort.by("idClient").ascending(); // Add this line to sort clients by ID in ascending order
+        Page<Client> clients = repository.findAll(pr.withSort(sort)); // Add sort parameter to findAll method call
         modelMapper.typeMap(Client.class,ClientDTO.class).addMapping(client -> client.getAddress().getAddress_id(),ClientDTO::setAddressID);
         List<ClientDTO> clientsDTOs = clients.stream()
-                .map(client -> modelMapper.map(client, ClientDTO.class))
+                .map(client -> {
+                    ClientDTO clientDTO = modelMapper.map(client, ClientDTO.class);
+                    clientDTO.setNoBookings(repository.countBookingsByClientsId(client.getId()));
+                    return clientDTO;
+                })
                 .collect(Collectors.toList());
         return clientsDTOs;
     }

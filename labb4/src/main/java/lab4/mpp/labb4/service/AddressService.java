@@ -1,18 +1,17 @@
 package lab4.mpp.labb4.service;
 
 import lab4.mpp.labb4.app.AddressNotFoundException;
-import lab4.mpp.labb4.domain.Address;
-import lab4.mpp.labb4.domain.AddressDTO;
-import lab4.mpp.labb4.domain.Car;
-import lab4.mpp.labb4.domain.CarDTO;
+import lab4.mpp.labb4.domain.*;
 import lab4.mpp.labb4.repo.AddressRepository;
 import lab4.mpp.labb4.repo.ClientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,10 +39,16 @@ class AddressService {
 
     public List<AddressDTO> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
-        Page<Address> addresses = repository.findAll(pr);
+        Sort sort = Sort.by("address_id").ascending(); // Add this line to sort clients by ID in ascending order
+        Page<Address> addresses = repository.findAll(pr.withSort(sort));
         List<AddressDTO> addressesDTOs = addresses.stream()
-                .map(addr -> modelMapper.map(addr, AddressDTO.class))
+                .map(addr -> {
+                    AddressDTO addressDTO = modelMapper.map(addr, AddressDTO.class);
+                    addressDTO.setNoClients(repository.countClientsByAddressId(addr.getAddress_id()));
+                    return addressDTO;
+                })
                 .collect(Collectors.toList());
+
         return addressesDTOs;
     }
     // end::get-aggregate-root[]

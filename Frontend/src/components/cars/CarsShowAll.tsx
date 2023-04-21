@@ -26,11 +26,12 @@ import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 import { Clients } from "../../models/Client";
 import { Address } from "../../models/Address";
+import { CarDTO } from "../../models/CarDTO";
 
 const PAGE_SIZE = 100;
 export const CarsShowAll = () => {
     const [loading, setLoading] = useState(false);
-    const [car, setCars] = useState<Car[]>([]);
+    const [car, setCars] = useState<CarDTO[]>([]);
     const [pageSize, setPageSize] = useState(10);
     const [totalCars, setTotalCars] =useState(0)
     const [currentPage, setCurrentPage]=useState(0)
@@ -40,10 +41,10 @@ export const CarsShowAll = () => {
       setLoading(true);
 
       const fetchRecLbl = () => {
-        fetch(`${BACKEND_API_URL}/cars/countAll`)
+        fetch(`http://localhost:8080/cars/countAll`)
         .then((response) => response.json())
         .then((count) => {
-          fetch(`${BACKEND_API_URL}/cars/page/${currentPage}/size/${pageSize}`)
+          fetch(`http://localhost:8080/cars/page/${currentPage}/size/${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
             setTotalCars(count);
@@ -72,7 +73,7 @@ export const CarsShowAll = () => {
     };
 
     const sortCars = () => {
-        const sortedCar = [...car].sort((a: Car, b: Car) => {
+        const sortedCar = [...car].sort((a: CarDTO, b: CarDTO) => {
             if (a.nrkilometers < b.nrkilometers) {
                 return -1;
             }
@@ -140,12 +141,12 @@ export const CarsShowAll = () => {
                   <TableCell align="center">Year of manufacture</TableCell>
                   <TableCell align="center">Number of kilometers</TableCell>
                   <TableCell align="right">Description</TableCell>
-
+                  <TableCell align="right">Number bookings</TableCell>
 
                 </TableRow>
               </TableHead>
               <TableBody>
-              {car.map((cars:Car, index) => (
+              {car.map((cars:CarDTO, index) => (
                     <TableRow key={index}>
                       
                       <TableCell component="th" scope="row">
@@ -163,6 +164,7 @@ export const CarsShowAll = () => {
                     <TableCell align="center">{cars.year_manufacture}</TableCell>
                     <TableCell align="center">{cars.nrkilometers}</TableCell>
                     <TableCell align="right">{cars.description}</TableCell>
+                    <TableCell align="right">{cars.noBookings}</TableCell>
                     
                     <TableCell align="right">
                     <IconButton

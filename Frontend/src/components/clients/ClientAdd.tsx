@@ -23,6 +23,7 @@ export const ClientAdd = () => {
         addressID : 0,
         fname : "",
         lname :"",
+		noBookings:0,
             
     });
 

@@ -6,4 +6,5 @@ export interface Clients{
     lname :string;
     fname : string;
     addressID : number;
+    noBookings:number;
 }

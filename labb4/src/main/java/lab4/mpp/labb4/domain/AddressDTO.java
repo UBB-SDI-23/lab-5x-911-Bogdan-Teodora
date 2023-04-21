@@ -9,22 +9,26 @@ public class AddressDTO {
     private String city;
     private String additional_info;
 
+    private Integer noClients;
+
     public AddressDTO() {
     }
 
-    public AddressDTO(Long address_id, String country, String county, String city, String additional_info) {
+    public AddressDTO(Long address_id, String country, String county, String city, String additional_info, Integer noClients) {
         this.address_id = address_id;
         this.country = country;
         this.county = county;
         this.city = city;
         this.additional_info = additional_info;
+        this.noClients=noClients;
     }
 
-    public AddressDTO(String country, String county, String city, String additional_info) {
+    public AddressDTO(String country, String county, String city, String additional_info, Integer noClients) {
         this.country = country;
         this.county = county;
         this.city = city;
         this.additional_info = additional_info;
+        this.noClients=noClients;
     }
 
     public Long getAddress_id() {
@@ -65,6 +69,14 @@ public class AddressDTO {
 
     public void setAdditional_info(String additional_info) {
         this.additional_info = additional_info;
+    }
+
+    public Integer getNoClients() {
+        return noClients;
+    }
+
+    public void setNoClients(Integer noClients) {
+        this.noClients = noClients;
     }
 
     @Override

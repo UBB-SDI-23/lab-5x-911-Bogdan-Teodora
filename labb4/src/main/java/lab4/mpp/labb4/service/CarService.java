@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -52,10 +53,15 @@ class CarService {
 
     public List<CarDTO> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
-        Page<Car> cars = repository.findAll(pr);
+        Sort sort = Sort.by("id").ascending(); // Add this line to sort clients by ID in ascending order
+        Page<Car> cars = repository.findAll(pr.withSort(sort));
 
         List<CarDTO> carsDTOs = cars.stream()
-                .map(car -> modelMapper.map(car, CarDTO.class))
+                .map(car -> {
+                    CarDTO carDTO = modelMapper.map(car, CarDTO.class);
+                    carDTO.setNoBookings(repository.countBookingsByClientId(car.getId()));
+                    return carDTO;
+                })
                 .collect(Collectors.toList());
         return carsDTOs;
     }

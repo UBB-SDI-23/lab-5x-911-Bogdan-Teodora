@@ -22,9 +22,7 @@ export const CarsAdd = () => {
             color: "",
             year_manufacture: 0,
             nrkilometers: 1,
-			description : "",
-            
-    });
+			description : "",    });
 
 	const addcar = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();

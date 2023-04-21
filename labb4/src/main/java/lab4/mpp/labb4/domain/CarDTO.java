@@ -15,10 +15,12 @@ public class CarDTO {
     //private List<BookingDTOWithID> bookings= new ArrayList<>();
     private String description;
 
+    private Integer noBookings;
+
     public CarDTO() {
     }
 
-    public CarDTO(Long id, String model, String brand, String color, int year_manufacture, int nrkilometers, String description) {
+    public CarDTO(Long id, String model, String brand, String color, int year_manufacture, int nrkilometers, String description, Integer noBookings) {
         this.id = id;
         this.model = model;
         this.brand = brand;
@@ -26,15 +28,17 @@ public class CarDTO {
         this.year_manufacture = year_manufacture;
         this.nrkilometers = nrkilometers;
         this.description = description;
+        this.noBookings = noBookings;
     }
 
-    public CarDTO(String model, String brand, String color, int year_manufacture, int nrkilometers, String description) {
+    public CarDTO(String model, String brand, String color, int year_manufacture, int nrkilometers, String description,Integer noBookings) {
         this.model = model;
         this.brand = brand;
         this.color = color;
         this.year_manufacture = year_manufacture;
         this.nrkilometers = nrkilometers;
         this.description= description;
+        this.noBookings=noBookings;
     }
 
 //    public static CarDTO fromManufacturer(Car manufacturer){
@@ -113,6 +117,15 @@ public class CarDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Integer getNoBookings() {
+        return noBookings;
+    }
+
+    public void setNoBookings(Integer noBookings) {
+        this.noBookings = noBookings;
+    }
+
     //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;
