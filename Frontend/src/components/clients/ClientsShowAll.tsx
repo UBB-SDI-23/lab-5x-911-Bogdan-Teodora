@@ -35,19 +35,20 @@ export const ClientsShowAll = () => {
   const [pageSize, setPageSize] = useState(10);
   const crt = (page - 1) * pageSize + 1;
 
-  const fetchClients = async () => {
-      setLoading(true);
-      const response = await fetch(
-        `${BACKEND_API_URL}/clients/paged?page=${page}&size=${pageSize}`
-      );
-      const { count, next, previous, results } = await response.json();
-      setClients(results);
-      setLoading(false);
+  useEffect(() => {
+    setLoading(true);
+
+    const fetchClients = () => {
+      fetch(`${BACKEND_API_URL}/clients/paged?page=${page}&size=${pageSize}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setClients(data);
+          setLoading(false);
+        });
+      
     };
-  
-    useEffect(() => {
-      fetchClients();
-    }, [page]);
+    fetchClients();
+  }, [page, pageSize]);
 
   const sortClients = () => {
       const sortedClients = [...clients].sort((a: Clients, b: Clients) => {
