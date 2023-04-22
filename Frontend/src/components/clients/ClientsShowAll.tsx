@@ -39,7 +39,7 @@ export const ClientsShowAll = () => {
     setLoading(true);
 
     const fetchClients = () => {
-      fetch(`http://localhost:8080/clients/paged?page=${page}&size=${pageSize}`)
+      fetch(`${BACKEND_API_URL}/clients/paged?page=${page}&size=${pageSize}`)
         .then((response) => response.json())
         .then((data) => {
           setClients(data);
