@@ -40,7 +40,7 @@ class AddressService {
     public List<AddressDTO> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
         Sort sort = Sort.by("address_id").ascending(); // Add this line to sort clients by ID in ascending order
-        Page<Address> addresses = repository.findAll(pr.withSort(sort));
+        Page<Address> addresses = repository.findAll(pr);
         List<AddressDTO> addressesDTOs = addresses.stream()
                 .map(addr -> {
                     AddressDTO addressDTO = modelMapper.map(addr, AddressDTO.class);
