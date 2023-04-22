@@ -52,16 +52,24 @@ class CarService {
     // end::get-aggregate-root[]
 
     public List<CarDTO> allPaged(PageRequest pr) {
+//        ModelMapper modelMapper = new ModelMapper();
+//        Sort sort = Sort.by("id").ascending(); // Add this line to sort clients by ID in ascending order
+//        Page<Car> cars = repository.findAll(pr.withSort(sort));
+//
+//        List<CarDTO> carsDTOs = cars.stream()
+//                .map(car -> {
+//                    CarDTO carDTO = modelMapper.map(car, CarDTO.class);
+//                    carDTO.setNoBookings(repository.countBookingsByClientId(car.getId()));
+//                    return carDTO;
+//                })
+//                .collect(Collectors.toList());
+//        return carsDTOs;
         ModelMapper modelMapper = new ModelMapper();
         Sort sort = Sort.by("id").ascending(); // Add this line to sort clients by ID in ascending order
         Page<Car> cars = repository.findAll(pr.withSort(sort));
 
         List<CarDTO> carsDTOs = cars.stream()
-                .map(car -> {
-                    CarDTO carDTO = modelMapper.map(car, CarDTO.class);
-                    carDTO.setNoBookings(repository.countBookingsByClientId(car.getId()));
-                    return carDTO;
-                })
+                .map(car -> modelMapper.map(car, CarDTO.class))
                 .collect(Collectors.toList());
         return carsDTOs;
     }
