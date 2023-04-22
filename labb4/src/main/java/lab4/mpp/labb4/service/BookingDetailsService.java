@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -53,7 +54,8 @@ class BookingDetailsService {
     public List<BookingDTOWithID> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
         //List<RecordLable> recordLables = rLrepo.findAll();
-        Page<BookingDetails> bookingDetails = repository.findAll(pr);
+        Sort sort = Sort.by("id").ascending(); // Add this line to sort clients by ID in ascending order
+        Page<BookingDetails> bookingDetails = repository.findAll(pr.withSort(sort));
         modelMapper.typeMap(BookingDetails.class,BookingDTOWithID.class).addMapping(client -> client.getCar().getId(),BookingDTOWithID::setCarId);
         modelMapper.typeMap(BookingDetails.class,BookingDTOWithID.class).addMapping(client -> client.getClient().getId(),BookingDTOWithID::setClientId);
         List<BookingDTOWithID> clientsDTOs = bookingDetails.stream()
