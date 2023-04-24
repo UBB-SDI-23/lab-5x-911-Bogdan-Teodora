@@ -75,7 +75,7 @@ export const BookingsAdd = () => {
     
     const fetchCarsSuggestions = async (query: string) => {
       try {
-        let url =`http://localhost:8080/cars/autocomplete?query=${query}`;
+        let url =`${BACKEND_API_URL}/cars/autocomplete?query=${query}`;
   
         const response = await fetch(url);
   
@@ -90,7 +90,7 @@ export const BookingsAdd = () => {
     };
     const fetchClientSuggestions = async (query: string) => {
         try {
-          let url = `http://localhost:8080/clients/autocomplete?query=${query}`;
+          let url = `${BACKEND_API_URL}/clients/autocomplete?query=${query}`;
     
           const response = await fetch(url);
     

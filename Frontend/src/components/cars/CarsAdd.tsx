@@ -62,7 +62,7 @@ export const CarsAdd = () => {
 			return;
 		}
 		try {
-			await axios.post(`http://localhost:8080/cars/add`, car);
+			await axios.post(`${BACKEND_API_URL}/cars/add`, car);
 			navigate("/cars");
 		} catch (error) {
 			console.log(error);

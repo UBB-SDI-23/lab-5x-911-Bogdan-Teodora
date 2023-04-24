@@ -42,7 +42,7 @@ export const ClientDetails = () => {
 					<p>Client phone number: {client?.phoneNR}</p>
 					<p>Client email address: {client?.email_address}</p>
 					<p>Client date of birth : {client?.dateOfBirth}</p>
-                    <p>Client address id assigned : {client?.addressID}</p>
+                    <p>Client address id assigned : {client?.address?.address_id}</p>
                     <p>Client first name : {client?.fname}</p>
 					<p>Client last name : {client?.lname}</p>
 				</CardContent>

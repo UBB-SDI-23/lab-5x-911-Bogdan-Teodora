@@ -41,7 +41,7 @@ export const BookingsShowAll = () => {
   
       const fetchBookings = () => {
         
-          fetch(`http://localhost:8080/bookings/paged?page=${currentPage}&size=${pageSize}`)
+          fetch(`${BACKEND_API_URL}/bookings/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
             setTotalBookings(10000000);

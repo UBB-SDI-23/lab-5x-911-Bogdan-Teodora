@@ -24,7 +24,7 @@ export const AddressDetails = () => {
         const fetchAddress = async () => {
           try {
             
-            const response = await fetch(`http://localhost:8080/addresses/${id}/details`);
+            const response = await fetch(`${BACKEND_API_URL}/addresses/${id}/details`);
             const data = await response.json();
             setAddresses(data);
 			setLoading(false);
