@@ -46,6 +46,19 @@ export const BookingsDetails = () => {
                     <p>Booking pickup location : {bookings?.pickup_loc}</p>
                     <p>Booking's client id : {bookings?.clientId}</p>
                     <p>Booking's car id : {bookings?.carId}</p>
+
+					{bookings?.client &&bookings.car &&(
+					<><p>Client ID : {bookings?.client?.idClient}</p>
+					<p>Client First Name : {bookings?.client?.fname}</p>
+					<p>Client Last Name : {bookings?.client?.lname}</p>
+					<p>Client Phone Nr : {bookings?.client?.phoneNR}</p>
+					<p>Client Email addr : {bookings?.client?.email_address}</p>
+					<p>Client Date of Birth:{bookings?.client?.dateOfBirth}</p>
+					<p>Car Brand:{bookings?.car?.brand}</p>
+					<p>Car Model:{bookings?.car?.model}</p>
+					<p>Car Color:{bookings?.car?.color}</p>
+					<p>Car Year of manufacture:{bookings?.car?.year_manufacture}</p>
+					<p>Car Nr of kilometers:{bookings?.car.nrkilometers}</p></>)}
 				</CardContent>
 				<CardActions>
 					<IconButton component={Link} sx={{ mr: 3 }} to={`/bookings/${id}/edit`}>
