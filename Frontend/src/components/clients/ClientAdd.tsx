@@ -1,6 +1,6 @@
-import { Button, Card, CardActions, CardContent, IconButton, TextField } from "@mui/material";
+import { Autocomplete, Button, Card, CardActions, CardContent, IconButton, TextField } from "@mui/material";
 import { Container } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -12,6 +12,8 @@ import { BACKEND_API_URL } from "../../constants";
 import { Clients } from "../../models/Client";
 import { GlobalURL } from "../../main";
 import { ClientsDTO } from "../../models/ClientsDTO";
+import { Address } from "../../models/Address";
+import { debounce } from "lodash";
 
 export const ClientAdd = () => {
 	const navigate = useNavigate();
@@ -62,6 +64,43 @@ export const ClientAdd = () => {
 		}
 	};
 
+	const [address, setAddress] = useState<Address[]>([]);
+
+  const fetchSuggestions = async (query: string) => {
+    try {
+      //let url = GlobalURL + `/adoptions/autocomplete?query=${query}`;
+	  let url =`${BACKEND_API_URL}/addresses/autocomplete?query=${query}`;
+      const response = await fetch(url);
+
+      const data = await response.json();
+
+      setClients(data);
+
+      console.log(data);
+    } catch (error) {
+      console.log("Error fetching suggestions:", error);
+    }
+  };
+
+  const debouncedFetchSuggestions = useCallback(
+    debounce(fetchSuggestions, 500),
+    []
+  );
+
+  const handleInputChange = (event: any, value: any, reason: any) => {
+    console.log("input", value, reason);
+
+    if (reason == "input") {
+      debouncedFetchSuggestions(value);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedFetchSuggestions.cancel();
+    };
+  }, [debouncedFetchSuggestions]);
+
 	return (
 		<Container>
 			<Card>
@@ -101,7 +140,7 @@ export const ClientAdd = () => {
 							onChange={(event) => setClients({ ...client, dateOfBirth: event.target.value })}
 						/>
 
-                        <TextField
+                        {/* <TextField
 							id="addressID"
 							label="Address Id "
 							variant="outlined"
@@ -113,7 +152,7 @@ export const ClientAdd = () => {
 								setClients({ ...client, addressID: parseInt(event.target.value) });
 								setAddressError(false);
 							}}
-						/>
+						/> */}
 
                         <TextField
 							id="fname"
@@ -141,6 +180,28 @@ export const ClientAdd = () => {
 								setLNameError(false);
 							}}
 						/>
+
+			<Autocomplete
+              id="address"
+              options={address}
+              getOptionLabel={(option) =>
+                `${option.address_id},  ${option.county}, ${option.city}`
+              }
+              renderInput={(params) => (
+                <TextField {...params} label="Address" variant="outlined" />
+              )}
+              filterOptions={(options, date) =>
+                options.filter((option) =>
+                  option.address_id.toString().startsWith(date.inputValue)
+                )
+              }
+              onInputChange={handleInputChange}
+              onChange={(event, value) => {
+                if (value) {
+                    setClients({ ...client, addressID: value.address_id});
+                }
+              }}
+            />
 						<Button type="submit">Add Client</Button>
 					</form>
 				</CardContent>

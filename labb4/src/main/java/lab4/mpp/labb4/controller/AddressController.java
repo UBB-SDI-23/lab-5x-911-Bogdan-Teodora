@@ -78,6 +78,13 @@ class AddressController {
         return this.addressService.countAllAddresses();
     }
 
+    @GetMapping("/addresses/autocomplete")
+    public List<Address> getAddressesSuggestions(@RequestParam String query)
+    {
+        return this.addressService.getAddressIdsAutocomplete(query);
+    }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex)
     {
@@ -89,6 +96,7 @@ class AddressController {
         });
         return errors;
     }
+
 
 //    @GetMapping("/cars/nrKilometers/{minNrKilometers}")
 //    List<Car> byNrKilometers(@PathVariable int minNrKilometers) {

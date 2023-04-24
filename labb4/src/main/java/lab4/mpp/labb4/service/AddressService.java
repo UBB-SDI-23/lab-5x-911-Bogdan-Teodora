@@ -89,6 +89,16 @@ class AddressService {
         return repository.count();
     }
 
+    public List<Address> getAddressIdsAutocomplete( String query)
+    {
+
+        List<Address> adoptions=repository.findAll();
+
+        return adoptions.stream()
+                .filter(adoption -> adoption.getAddress_id().toString().startsWith(query)).limit(20)
+                .collect(Collectors.toList());
+    }
+
 
 //    @GetMapping("/cars/nrKilometers/{minNrKilometers}")
 //    List<Car> byNrKilometers(@PathVariable int minNrKilometers) {
