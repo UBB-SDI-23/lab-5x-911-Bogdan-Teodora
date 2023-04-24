@@ -224,7 +224,9 @@ class CarService {
     }
 
     public List<Car> getCarsIdsAutocomplete(String query) {
-        List<Car> cars=repository.findAll();
+        PageRequest pr = PageRequest.of(0,500);
+
+        Page<Car> cars=repository.findAll(pr);
 
         return cars.stream()
                 .filter(adoption -> adoption.getId().toString().startsWith(query)).limit(20)

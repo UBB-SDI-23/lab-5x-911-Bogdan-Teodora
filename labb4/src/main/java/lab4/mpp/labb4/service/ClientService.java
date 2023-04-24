@@ -240,7 +240,9 @@ class ClientService {
     }
 
     public List<Client> getClientsNameAutocomplete(String query) {
-        List<Client> customers=repository.findAll();
+        PageRequest pr = PageRequest.of(0,500);
+
+        Page<Client> customers=repository.findAll(pr);
 
         return customers.stream()
                 .filter(adoption -> adoption.getFName().toLowerCase().contains(query.toLowerCase())).limit(20)

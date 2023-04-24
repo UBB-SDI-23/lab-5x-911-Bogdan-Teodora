@@ -91,8 +91,8 @@ class AddressService {
 
     public List<Address> getAddressIdsAutocomplete( String query)
     {
-
-        List<Address> adoptions=repository.findAll();
+        PageRequest pr = PageRequest.of(0,500);
+        Page<Address> adoptions=repository.findAll(pr);
 
         return adoptions.stream()
                 .filter(adoption -> adoption.getAddress_id().toString().startsWith(query)).limit(20)
