@@ -22,6 +22,7 @@ export const AddressAdd = () => {
         county : "",
         city : "",
         additional_info : "",
+		clientList : [],
     });
 
 	// State variables for input field errors
