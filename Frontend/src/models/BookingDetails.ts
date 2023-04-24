@@ -1,3 +1,6 @@
+import { Car } from "./Car";
+import { Clients } from "./Client";
+
 // import { Car } from "./Car";
 export interface BookingDetails{
     startDate: string;
@@ -9,4 +12,6 @@ export interface BookingDetails{
     clientId: number;
     idBooking: number;
     carId: number;
+    car?:Car;
+    client?:Clients;
 }

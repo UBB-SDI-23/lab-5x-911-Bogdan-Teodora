@@ -72,7 +72,7 @@ class BookingDetailsController {
     }
 
     @GetMapping("/bookings/{id}/details")
-    BookingDTOWithID oneBooking(@PathVariable String id) {
+    BookingDTO oneBooking(@PathVariable String id) {
         Long clientId = Long.parseLong(id);
 
         return service.oneBooking(clientId);

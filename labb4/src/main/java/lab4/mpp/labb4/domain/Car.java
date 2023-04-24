@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name="Car")
 public class Car{
 
-    private @Id @GeneratedValue Long id;
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     @NotBlank(message ="Car's model is mandatory")
     private String model;
     @NotBlank(message ="The brand is mandatory")
@@ -32,27 +32,27 @@ public class Car{
     private String description;
 
 
-    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers, String description) {
-        this.model = model;
-        this.brand = brand;
-        this.color = color;
-        this.year_manufacture = year_manufacture;
-        this.nrkilometers = nrkilometers;
-        this.description=description;
-    }
-
-    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers,String description,  List<BookingDetails> bookingDetailsSet) {
-        this.model = model;
-        this.brand = brand;
-        this.color = color;
-        this.year_manufacture = year_manufacture;
-        this.nrkilometers = nrkilometers;
-        this.description=description;
-        this.bookingDetailsSet = bookingDetailsSet;
-    }
+//    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers, String description) {
+//        this.model = model;
+//        this.brand = brand;
+//        this.color = color;
+//        this.year_manufacture = year_manufacture;
+//        this.nrkilometers = nrkilometers;
+//        this.description=description;
+//    }
+//
+//    public Car(String model, String brand, String color, int year_manufacture, int nrkilometers,String description,  List<BookingDetails> bookingDetailsSet) {
+//        this.model = model;
+//        this.brand = brand;
+//        this.color = color;
+//        this.year_manufacture = year_manufacture;
+//        this.nrkilometers = nrkilometers;
+//        this.description=description;
+//        this.bookingDetailsSet = bookingDetailsSet;
+//    }
 
     public Car() {
-
+        ;
     }
 
     public List<BookingDetails> getBookingDetailsSet() {

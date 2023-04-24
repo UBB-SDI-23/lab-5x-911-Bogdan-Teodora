@@ -126,5 +126,11 @@ class CarController {
     {
         return this.carService.countAllCars();
     }
+
+    @GetMapping("/cars/autocomplete")
+    public List<Car> getCarsSuggestions(@RequestParam String query)
+    {
+        return this.carService.getCarsIdsAutocomplete(query);
+    }
 }
 

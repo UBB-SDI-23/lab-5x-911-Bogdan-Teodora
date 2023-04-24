@@ -75,6 +75,16 @@ class CarService {
     }
 
     public Car newCar( Car newCar) {
+
+//        List<Car> cars = repository.findAll(); // Assuming you have a method to get all the cars
+//        if (!cars.isEmpty()) {
+//            Car lastCar = cars.get(cars.size() - 1);
+//            long newId = lastCar.getId() + 1;
+//            newCar.setId(newId);
+//        } else {
+//            newCar.setId(1L); // Assuming the first car should have an id of 1
+//        }
+
         return repository.save(newCar);
     }
 
@@ -211,6 +221,14 @@ class CarService {
 
     public Long countAllCars() {
         return repository.count();
+    }
+
+    public List<Car> getCarsIdsAutocomplete(String query) {
+        List<Car> cars=repository.findAll();
+
+        return cars.stream()
+                .filter(adoption -> adoption.getId().toString().startsWith(query)).limit(20)
+                .collect(Collectors.toList());
     }
 
 

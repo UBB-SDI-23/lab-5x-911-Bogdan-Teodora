@@ -6,6 +6,7 @@ import lab4.mpp.labb4.repo.AddressRepository;
 import lab4.mpp.labb4.repo.BookingRepository;
 import lab4.mpp.labb4.repo.ClientRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -74,8 +75,13 @@ class ClientService {
         return newClient;
     }
 
-    public Client addClient( Client newClient) {
-        return repository.save(newClient);
+    public Client addClient( ClientDTO newClient) {
+        Address address=addrRepo.findById(newClient.getAddressID()).get();
+        ModelMapper modelMapper=new ModelMapper();
+        TypeMap<ClientDTO,Client> typeMap=modelMapper.createTypeMap(ClientDTO.class,Client.class);
+        Client client=modelMapper.map(newClient,Client.class);
+        client.setAddress(address);
+        return repository.save(client);
     }
 
 //    @PostMapping("/clients/{clientId}/bookings")
@@ -150,22 +156,40 @@ class ClientService {
 //        return clientDTO1MB;
     }
 
-    public ClientDTO oneClient(String id){
+    public ClientDTOWithCarsIds oneClient(String id){
+//        Long clientId = Long.parseLong(id);
+//        if (repository.findById(clientId).isEmpty())
+//            throw new ClientNotFoundException(clientId);
+//
+//        Client client=repository.findById(clientId).get();
+//        ClientDTO clientDTO=new ClientDTO();
+//        clientDTO.setAddressID(client.getAddress().getAddress_id());
+//        clientDTO.setIdClient(client.getId());
+//        clientDTO.setEmail_address(client.getEmail_address());
+//        clientDTO.setPhoneNR(client.getPhoneNR());
+//        clientDTO.setDateOfBirth(client.getDateOfBirth());
+//        clientDTO.setFName(client.getFName());
+//        clientDTO.setLName(client.getLName());
+//
+//        return  clientDTO;
         Long clientId = Long.parseLong(id);
         if (repository.findById(clientId).isEmpty())
             throw new ClientNotFoundException(clientId);
 
         Client client=repository.findById(clientId).get();
-        ClientDTO clientDTO=new ClientDTO();
-        clientDTO.setAddressID(client.getAddress().getAddress_id());
-        clientDTO.setIdClient(client.getId());
-        clientDTO.setEmail_address(client.getEmail_address());
-        clientDTO.setPhoneNR(client.getPhoneNR());
-        clientDTO.setDateOfBirth(client.getDateOfBirth());
-        clientDTO.setFName(client.getFName());
-        clientDTO.setLName(client.getLName());
+        ClientDTOWithCarsIds clientDTOWithCarIds=new ClientDTOWithCarsIds();
 
-        return  clientDTO;
+        List<Long> carsIds=new ArrayList<>();
+        List<BookingDetails> bookingDetails=bookingRepo.findAll();
+        for(BookingDetails ac:bookingDetails)
+            if(Objects.equals(ac.getClient().getId(), client.getId()))
+                carsIds.add(ac.getCar().getId());
+        clientDTOWithCarIds.setCarsIds(carsIds);
+        clientDTOWithCarIds.setClient(client);
+        clientDTOWithCarIds.setAddressId(client.getAddress().getAddress_id());
+
+        return  clientDTOWithCarIds;
+
     }
 
     public Client replaceClient( Client newClient, Long id) {
@@ -213,6 +237,14 @@ class ClientService {
 
     public Long countAllClients() {
         return repository.count();
+    }
+
+    public List<Client> getClientsNameAutocomplete(String query) {
+        List<Client> customers=repository.findAll();
+
+        return customers.stream()
+                .filter(adoption -> adoption.getFName().toLowerCase().contains(query.toLowerCase())).limit(20)
+                .collect(Collectors.toList());
     }
 
 //    @ExceptionHandler(MethodArgumentNotValidException.class)

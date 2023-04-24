@@ -12,6 +12,8 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<BookingDetails, Long> {
     List<BookingDetails> findByAmountGreaterThanEqual(int minAmount);
 
+    List<BookingDetails> findBookingDetailsByClientId(Long carId);
+
 }
 //{
 //     "startDate":"12 Apr 2023",

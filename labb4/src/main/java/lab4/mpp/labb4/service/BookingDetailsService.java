@@ -6,6 +6,7 @@ import lab4.mpp.labb4.repo.BookingRepository;
 import lab4.mpp.labb4.repo.CarRepository;
 import lab4.mpp.labb4.repo.ClientRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,18 +54,15 @@ class BookingDetailsService {
 
     public List<BookingDTOWithID> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
-        //List<RecordLable> recordLables = rLrepo.findAll();
-        Sort sort = Sort.by("id").ascending(); // Add this line to sort clients by ID in ascending order
-        Page<BookingDetails> bookingDetails = repository.findAll(pr.withSort(sort));
-        modelMapper.typeMap(BookingDetails.class,BookingDTOWithID.class).addMapping(client -> client.getCar().getId(),BookingDTOWithID::setCarId);
-        modelMapper.typeMap(BookingDetails.class,BookingDTOWithID.class).addMapping(client -> client.getClient().getId(),BookingDTOWithID::setClientId);
-        List<BookingDTOWithID> clientsDTOs = bookingDetails.stream()
-                .map(client -> modelMapper.map(client, BookingDTOWithID.class))
+        modelMapper.typeMap(BookingDetails.class, BookingDTOWithID.class);
+
+        Page<BookingDetails> bookingDetails = repository.findAll(pr);
+        return bookingDetails.stream()
+                .map(adoptionCustomer -> modelMapper.map(adoptionCustomer, BookingDTOWithID.class))
                 .collect(Collectors.toList());
-        return clientsDTOs;
     }
 
-    public BookingDetails newBooking( BookingDetails newBooking,  Long clientId, @PathVariable Long carId) {
+    public BookingDetails newBooking( BookingDetails newBooking,  Long clientId, Long carId) {
         //return repository.save(newBooking);
         Client client = clientRepository.findById(clientId).get();
         Car car = carRepository.findById(carId).get();
@@ -78,20 +76,16 @@ class BookingDetailsService {
     }
 
     public BookingDetails addBooking( BookingDTOWithID newBooking) {
-        BookingDTOWithID newB = new BookingDTOWithID();
-        BookingDetails ac = new BookingDetails();
-        ac.setAmount(newBooking.getAmount());
-        ac.setDrop_loc(newBooking.getDrop_loc());
-        ac.setPickup_loc(newBooking.getPickup_loc());
-        ac.setStartDate(newBooking.getStartDate());
-        ac.setReturnDate(newBooking.getReturnDate());
-        ac.setBookingStatus(newBooking.getBookingStatus());
-        Car selectedCar=carRepository.findById(newBooking.getCarId()).get();
-        ac.setCar(selectedCar);
-        Client selectedClient=clientRepository.findById(newBooking.getClientId()).get();
-        ac.setClient(selectedClient);
-        ac=repository.save(ac);
-        return ac;
+        Client client = clientRepository.findById(newBooking.getClientId()).get();
+        Car car=carRepository.findById(newBooking.getCarId()).get();
+
+        ModelMapper modelMapper = new ModelMapper();
+        TypeMap <BookingDTOWithID, BookingDetails> typeMap = modelMapper.createTypeMap(BookingDTOWithID.class,BookingDetails.class);
+
+        BookingDetails bookingDetails = modelMapper.map(newBooking,BookingDetails.class);
+        bookingDetails.setClient(client);
+        bookingDetails.setCar(car);
+        return repository.save(bookingDetails);
     }
 
     public List<BookingDetails> newClientCarList( List<BookingDTOWithID> BookingDetList, Long carId) {
@@ -135,15 +129,23 @@ class BookingDetailsService {
         return  modelMapper.map(adoptionCustomer, BookingDTO.class);
     }
 
-    public BookingDTOWithID oneBooking( Long id) {
+    public BookingDTO oneBooking( Long id) {
+//        if (repository.findById(id).isEmpty())
+//            throw new BookingNotFoundException(id);
+//
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.typeMap(BookingDetails.class, BookingDTOWithID.class);
+//
+//        BookingDetails adoptionCustomer=repository.findById(id).get();
+//        return  modelMapper.map(adoptionCustomer, BookingDTOWithID.class);
+
         if (repository.findById(id).isEmpty())
             throw new BookingNotFoundException(id);
-
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.typeMap(BookingDetails.class, BookingDTOWithID.class);
+        modelMapper.typeMap(BookingDetails.class,BookingDTO.class);
 
-        BookingDetails adoptionCustomer=repository.findById(id).get();
-        return  modelMapper.map(adoptionCustomer, BookingDTOWithID.class);
+        BookingDetails bookingDetails = repository.findById(id).get();
+        return modelMapper.map(bookingDetails,BookingDTO.class);
     }
 
     public BookingDetails replaceBooking( BookingDetails newBooking, Long id) {

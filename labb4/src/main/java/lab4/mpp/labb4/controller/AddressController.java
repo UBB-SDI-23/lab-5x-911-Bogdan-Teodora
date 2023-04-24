@@ -9,9 +9,13 @@ import lab4.mpp.labb4.repo.ClientRepository;
 import lab4.mpp.labb4.service.AddressService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -72,6 +76,18 @@ class AddressController {
     public Long countAllAddresses()
     {
         return this.addressService.countAllAddresses();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex)
+    {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName =((FieldError) error).getField();
+            String errorMessage =error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 
 //    @GetMapping("/cars/nrKilometers/{minNrKilometers}")

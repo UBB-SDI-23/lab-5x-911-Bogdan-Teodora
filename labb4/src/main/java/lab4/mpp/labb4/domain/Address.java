@@ -2,6 +2,7 @@ package lab4.mpp.labb4.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,10 +13,12 @@ import java.util.Objects;
 public class Address {
     private @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY) Long address_id;
+    @NotBlank(message ="The country is mandatory")
     @Column(name="country")
     private String country;
     @Column(name="county")
     private String county;
+    @NotBlank(message ="The city is mandatory")
     @Column(name="city")
     private String city;
     @Column(name= "additional_info")

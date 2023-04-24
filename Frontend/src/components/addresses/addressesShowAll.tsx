@@ -41,7 +41,7 @@ export const AddressesShowAll = () => {
       setLoading(true);
   
       const fetchAddresses = () => {
-        fetch(`${BACKEND_API_URL}/addresses/paged?page=${currentPage}&size=${pageSize}`)
+        fetch(`http://localhost:8080/addresses/paged?page=${currentPage}&size=${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
             setTotalAddresses(1000000);

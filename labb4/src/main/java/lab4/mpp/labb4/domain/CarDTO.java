@@ -1,5 +1,8 @@
 package lab4.mpp.labb4.domain;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,10 +10,13 @@ import java.util.stream.Collectors;
 
 public class CarDTO {
     private  Long id;
+    @NotBlank(message ="Car's model is mandatory")
     private String model;
+    @NotBlank(message ="The brand is mandatory")
     private String brand;
     private String color;
     private int year_manufacture;
+    @Min(value=1, message ="No of kilometers should be more than 0")
     private int nrkilometers;
     //private List<BookingDTOWithID> bookings= new ArrayList<>();
     private String description;
@@ -124,6 +130,18 @@ public class CarDTO {
 
     public void setNoBookings(Integer noBookings) {
         this.noBookings = noBookings;
+    }
+
+    public static Car toCar(CarDTO carDTO) {
+        Car car = new Car();
+        car.setId(carDTO.getId());
+        car.setModel(carDTO.getModel());
+        car.setBrand(carDTO.getBrand());
+        car.setColor(carDTO.getColor());
+        car.setYear_manufacture(carDTO.getYear_manufacture());
+        car.setNrkilometers(carDTO.getNrkilometers());
+        car.setDescription(carDTO.getDescription());
+        return car;
     }
 
     //    @Override

@@ -62,7 +62,7 @@ class ClientController {
     }
 
     @PostMapping("/clients/add")
-    Client addClient(@RequestBody Client newClient) {
+    Client addClient(@RequestBody ClientDTO newClient) {
         return clientService.addClient(newClient);
     }
 
@@ -111,11 +111,9 @@ class ClientController {
     }
 
     @GetMapping("/clients/{id}/details")
-    ClientDTO oneClient (@PathVariable String id){
+    ClientDTOWithCarsIds oneClient (@PathVariable String id){
         return clientService.oneClient(id);
     }
-
-
 
     @PutMapping("/clients/{id}/edit")
     Client replaceClient(@RequestBody Client newClient, @PathVariable Long id) {
@@ -149,6 +147,12 @@ class ClientController {
     public Long countAllClients()
     {
         return this.clientService.countAllClients();
+    }
+
+    @GetMapping("/clients/autocomplete")
+    public List<Client> getClientsSuggestions(@RequestParam String query)
+    {
+        return this.clientService.getClientsNameAutocomplete(query);
     }
 
 }

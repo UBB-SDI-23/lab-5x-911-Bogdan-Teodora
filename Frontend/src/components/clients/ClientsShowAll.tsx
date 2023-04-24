@@ -14,7 +14,6 @@ import {
 	IconButton,
 	Tooltip,
   Button,
-  Pagination,
   Box
 } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -26,20 +25,27 @@ import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 import { Clients } from "../../models/Client";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import { ClientsDTO } from "../../models/ClientsDTO";
+import Pagination from "../../helpers/PaginationManager";
 
 
 export const ClientsShowAll = () => {
   const[loading, setLoading] = useState(true);
-  const[clients, setClients] = useState<Clients[]>([]);
+  const[clients, setClients] = useState<ClientsDTO[]>([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const crt = (page - 1) * pageSize + 1;
+
+  // useEffect(() => {
+  //   if (page === 1) getLocations();
+  //   else setPage(1);
+  // }, [pageSize]);
 
   useEffect(() => {
     setLoading(true);
 
     const fetchClients = () => {
-      fetch(`${BACKEND_API_URL}/clients/paged?page=${page}&size=${pageSize}`)
+      fetch(`http://localhost:8080/clients/paged?page=${page}&size=${pageSize}`)
         .then((response) => response.json())
         .then((data) => {
           setClients(data);
@@ -51,7 +57,7 @@ export const ClientsShowAll = () => {
   }, [page, pageSize]);
 
   const sortClients = () => {
-      const sortedClients = [...clients].sort((a: Clients, b: Clients) => {
+      const sortedClients = [...clients].sort((a: ClientsDTO, b: ClientsDTO) => {
           if (a.lname < b.lname) {
               return -1;
           }
@@ -89,7 +95,7 @@ export const ClientsShowAll = () => {
 
       {!loading && clients.length > 0 && (
         <>
-          <Button style={{color:"grey"}} disabled={page === 1} onClick={() => setPage(page - 1)}>
+          {/* <Button style={{color:"grey"}} disabled={page === 1} onClick={() => setPage(page - 1)}>
           Previous Page
           </Button>
 
@@ -98,7 +104,8 @@ export const ClientsShowAll = () => {
           onClick={() => setPage(page + 1)}
           >
           Next Page
-          </Button>
+          </Button> */}
+          <Pagination page={page} pageSize={pageSize} totalEntries={1000000} setPage={setPage} setPageSize={setPageSize} entityName="clients" />
           <TableContainer component={Paper}>
               <Table sx={{ minWidth: 800 }} aria-label="simple table" style={{backgroundColor:"whitesmoke"}}>
                   <TableHead>
@@ -107,7 +114,7 @@ export const ClientsShowAll = () => {
                           <TableCell align="center" style={{color:"#2471A3", fontWeight:'bold'}}>Phone number</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Email address</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Date of birth</TableCell>
-                          <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Address Id</TableCell>
+                          <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Address City</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>First name</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Last name</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>No bookings</TableCell>
@@ -116,7 +123,7 @@ export const ClientsShowAll = () => {
                       </TableRow>
                   </TableHead>
                   <TableBody>
-                      {clients.map((client:Clients, index) => (
+                      {clients.map((client:ClientsDTO, index) => (
                           <TableRow key={client.idClient}>
                               <TableCell component="th" scope="row">
                                   {index + crt}

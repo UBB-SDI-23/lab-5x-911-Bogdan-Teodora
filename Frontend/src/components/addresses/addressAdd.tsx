@@ -24,8 +24,27 @@ export const AddressAdd = () => {
         additional_info : "",
     });
 
+	// State variables for input field errors
+	const [countryError, setCountryError] = useState(false);
+	const [cityError, setCityError] = useState(false);
+	const [countyError, setCountyError] = useState(false);
+
 	const addAddress = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
+		// Check for input field errors
+		if (address.country === "") {
+			setCountryError(true);
+			return;
+			// Return to prevent submission if there is an error
+		}
+		if (address.city === "") {
+			setCityError(true);
+			return;
+		}
+		if (address.county === "") {
+			setCountyError(true);
+			return;
+		}
 		try {
 			await axios.post(`${BACKEND_API_URL}/addresses/add`, address);
 			navigate("/addresses");
@@ -48,7 +67,12 @@ export const AddressAdd = () => {
 							variant="outlined"
 							fullWidth
 							sx={{ mb: 2 }}
-							onChange={(event) => setAddresses({ ...address, country: event.target.value })}
+							error={countryError}
+							helperText={countryError ? "Country cannot be empty" : ""}
+							onChange={(event) => {
+								setAddresses({ ...address, country: event.target.value });
+								setCountryError(false);
+							}}
 						/>
 						<TextField
 							id="county"
@@ -56,7 +80,12 @@ export const AddressAdd = () => {
 							variant="outlined"
 							fullWidth
 							sx={{ mb: 2 }}
-							onChange={(event) => setAddresses({ ...address, county: event.target.value })}
+							error={countyError}
+							helperText={countyError ? "County cannot be empty" : ""}
+							onChange={(event) => {
+								setAddresses({ ...address, county: event.target.value });
+								setCountryError(false);
+							}}
 						/>
 
                         <TextField
@@ -65,7 +94,12 @@ export const AddressAdd = () => {
 							variant="outlined"
 							fullWidth
 							sx={{ mb: 2 }}
-							onChange={(event) => setAddresses({ ...address, city: event.target.value })}
+							error={cityError}
+							helperText={cityError ? "City cannot be empty" : ""}
+							onChange={(event) => {
+								setAddresses({ ...address, city: event.target.value });
+								setCityError(false);
+							}}
 						/>
 						<TextField
 							id="additional_info"
