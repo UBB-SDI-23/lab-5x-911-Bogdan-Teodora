@@ -105,7 +105,7 @@ public class Car{
     }
 
     public int getNrkilometers() {
-        return nrkilometers;
+        return this.nrkilometers;
     }
 
     public void setNrkilometers(int nr_kilometers) {

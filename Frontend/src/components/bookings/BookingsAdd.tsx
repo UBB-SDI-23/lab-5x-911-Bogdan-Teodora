@@ -215,14 +215,14 @@ export const BookingsAdd = () => {
 								options={cars}
 								
 								getOptionLabel={(option) =>
-								`${option.id},  ${option.brand}, ${option.model}, ${option.nrkilometers}, ${option.year_manufacture}`
+								`${option.id}, ${option.nrkilometers},  ${option.brand}, ${option.model}, ${option.year_manufacture}`
 								}
 								renderInput={(params) => (
-								<TextField {...params} label="Car ID" variant="outlined" />
+								<TextField {...params} label="Car Nr of kilometers" variant="outlined" />
 								)}
 								filterOptions={(options, date) =>
 								options.filter((option) =>
-									option.id.toString().startsWith(date.inputValue)
+									option.nrkilometers.toString().startsWith(date.inputValue)
 								)
 								}
 								onInputChange={handleCarsInputChange}

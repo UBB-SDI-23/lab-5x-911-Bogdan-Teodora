@@ -235,7 +235,7 @@ class CarService {
         Page<Car> cars=repository.findAll(pr);
 
         return cars.stream()
-                .filter(adoption -> adoption.getId().toString().startsWith(query)).limit(20)
+                .filter(adoption -> String.valueOf(adoption.getNrkilometers()).startsWith(query)).limit(20)
                 .collect(Collectors.toList());
     }
 
