@@ -43,7 +43,7 @@ import { Address } from "cluster";
         await axios.put(`${BACKEND_API_URL}/bookings/${id}/edit`, address);
         //await axios.put(`../../api/car/${busRouteId}`, busroute);
         //navigate(`/car/${busRouteId}/`);
-        navigate("/addresses");
+        navigate("/bookings");
       } catch (error) {
         console.log(error);
       }
@@ -56,7 +56,7 @@ import { Address } from "cluster";
             <IconButton
               component={Link}
               sx={{ mr: 3 }}
-              to={`/addresses/${id}/details`}
+              to={`/bookings/${id}/details`}
             >
               <ArrowBackIcon />
             </IconButton>{" "}
@@ -81,7 +81,7 @@ import { Address } from "cluster";
                         setAddresses(address);
                     }} />
   
-              <Button type="submit">Update Address</Button>
+              <Button type="submit">Update Booking</Button>
             </form>
           </CardContent>
   

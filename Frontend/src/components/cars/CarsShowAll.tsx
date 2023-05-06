@@ -141,7 +141,7 @@ export const CarsShowAll = () => {
                   <TableCell align="center">Year of manufacture</TableCell>
                   <TableCell align="center">Number of kilometers</TableCell>
                   <TableCell align="right">Description</TableCell>
-                  {/* <TableCell align="right">Number bookings</TableCell> */}
+                  <TableCell align="right">Number bookings</TableCell>
 
                 </TableRow>
               </TableHead>
@@ -164,7 +164,7 @@ export const CarsShowAll = () => {
                     <TableCell align="center">{cars.year_manufacture}</TableCell>
                     <TableCell align="center">{cars.nrkilometers}</TableCell>
                     <TableCell align="right">{cars.description}</TableCell>
-                    {/* <TableCell align="right">{cars.noBookings}</TableCell> */}
+                    <TableCell align="right">{cars.noBookings}</TableCell>
                     
                     <TableCell align="right">
                     <IconButton

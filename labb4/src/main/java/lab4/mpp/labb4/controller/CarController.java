@@ -1,5 +1,6 @@
 package lab4.mpp.labb4.controller;
 
+import jakarta.transaction.Transactional;
 import lab4.mpp.labb4.app.CarNotFoundException;
 import lab4.mpp.labb4.domain.*;
 import lab4.mpp.labb4.repo.*;
@@ -42,10 +43,13 @@ class CarController {
 
     }
 
+    @Transactional
     @GetMapping("/cars/page/{page}/size/{size}")
     public List<CarDTO> AllPaged(@PathVariable int page, @PathVariable int size) {
         PageRequest pr = PageRequest.of(page, size);
-        return carService.allPaged(pr);
+        return this.carService.allPaged(pr).stream().map(car -> car.getCarDTO(carService.getBookingsCount(car.getId()))).toList();
+
+        //return carService.allPaged(pr);
     }
     // end::get-aggregate-root[]
 
@@ -116,7 +120,7 @@ class CarController {
 
     //all the cars ordered by the average booking's price
     @GetMapping("/cars/statistics")
-    public Page<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+    public List<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                                 @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         PageRequest pr = PageRequest.of(page, size);
         return carService.getAllCarsOrderByAvgBookingPrice(pr);

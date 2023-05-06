@@ -44,8 +44,8 @@ export const BookingsDetails = () => {
                     <p>Booking status : {bookings?.bookingStatus}</p>
                     <p>Booking drop location : {bookings?.drop_loc}</p>
                     <p>Booking pickup location : {bookings?.pickup_loc}</p>
-                    <p>Booking's client id : {bookings?.clientId}</p>
-                    <p>Booking's car id : {bookings?.carId}</p>
+                    {/* <p>Booking's client id : {bookings?.id}</p> */}
+                    {/* <p>Booking's car id : {bookings?.carId}</p> */}
 
 					{bookings?.client &&bookings.car &&(
 					<><p>Client ID : {bookings?.client?.idClient}</p>
@@ -54,6 +54,7 @@ export const BookingsDetails = () => {
 					<p>Client Phone Nr : {bookings?.client?.phoneNR}</p>
 					<p>Client Email addr : {bookings?.client?.email_address}</p>
 					<p>Client Date of Birth:{bookings?.client?.dateOfBirth}</p>
+					<p>Car ID : {bookings?.car?.id}</p>
 					<p>Car Brand:{bookings?.car?.brand}</p>
 					<p>Car Model:{bookings?.car?.model}</p>
 					<p>Car Color:{bookings?.car?.color}</p>

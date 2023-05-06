@@ -12,7 +12,7 @@ import ReadMoreIcon from "@mui/icons-material/ReadMore";
 
 import { Address } from "../../models/Address";
 import { GlobalURL } from "../../main";
-import { Clients } from "../../models/Client";
+import { ClientsDTO } from "../../models/ClientsDTO";
 
 export const AddressDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -59,7 +59,7 @@ export const AddressDetails = () => {
 						<DeleteForeverIcon sx={{ color: "red" }} />
 					</IconButton>
 				</CardActions>
-			<p>The adopted pets</p>
+			<p>The clients assigned</p>
             {!loading &&!address?.clientList&& <p> No clients </p>}
             {!loading&& address?.clientList &&(
                 
@@ -67,7 +67,9 @@ export const AddressDetails = () => {
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">
 						<TableHead>
 						<TableRow>
+						<TableCell>#</TableCell>
                       <TableCell align="center" style={{color:"#2471A3", fontWeight:'bold'}}>Details</TableCell>
+					  
                           <TableCell align="center" style={{color:"#2471A3", fontWeight:'bold'}}>Phone number</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Email address</TableCell>
                           <TableCell align="center" style={{color:"#2471A3", fontWeight: 'bold'}}>Date of birth</TableCell>
@@ -78,7 +80,7 @@ export const AddressDetails = () => {
 						</TableHead>
 						<TableBody>
                             
-							{address?.clientList.map((client: Clients, index) => (
+							{address?.clientList.map((client: ClientsDTO, index) => (
 								<TableRow key={index}>
 									<TableCell component="th" scope="row">
 										{ index + 1}
@@ -88,6 +90,7 @@ export const AddressDetails = () => {
 											{client.fname}
 										</Link>
 									</TableCell>
+									
 									<TableCell align="center">{client.phoneNR}</TableCell>
 									<TableCell align="center">{client.email_address}</TableCell>
 									<TableCell align="center">{client.dateOfBirth}</TableCell>

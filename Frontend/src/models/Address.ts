@@ -1,4 +1,5 @@
 import { Clients } from "./Client";
+import { ClientsDTO } from "./ClientsDTO";
 
 export interface Address{
     address_id : number;
@@ -6,5 +7,5 @@ export interface Address{
     county : string;
     city : string;
     additional_info : string;
-    clientList:Clients[];
+    clientList:ClientsDTO[];
 }

@@ -37,7 +37,7 @@ export const CarsStatistics = () => {
       setLoading(true);
   
       const fetchClients = () => {
-        fetch(`${BACKEND_API_URL}/singers/countAll`)
+        fetch(`${BACKEND_API_URL}/cars/countAll`)
         .then((response) => response.json())
         .then((count) => {
           fetch(`${BACKEND_API_URL}/cars/statistics?page=${currentPage}&size=${pageSize}`)

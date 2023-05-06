@@ -256,7 +256,7 @@ export const BookingsAdd = () => {
 							id="client"
 							options={clients}
 							getOptionLabel={(option) =>
-							`${option.fname}  ${option.lname}`
+							`${option.id}, ${option.fname}, ${option.lname}`
 							}
 							renderInput={(params) => (
 							<TextField {...params} label="Client first name" variant="outlined" />
@@ -269,7 +269,7 @@ export const BookingsAdd = () => {
 							onInputChange={handleClientsInputChange}
 							onChange={(event, value) => {
 							if (value) {
-								setBookings({ ...bookings, clientId: value.idClient});
+								setBookings({ ...bookings, clientId: value.id});
 							}
 							}}
               		/>

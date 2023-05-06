@@ -23,13 +23,14 @@ public class ClientDTO {
         this.noBookings = noBookings;
     }
 
-    public ClientDTO(Long idClient, String FName, String LName, String phoneNR, String address, String dateOfBirth, AddressDTO addressDTO, Integer noBookings) {
+    public ClientDTO(Long idClient, String FName, String LName, String phoneNR, String address, String dateOfBirth, Long addressDTO, Integer noBookings) {
         this.idClient = idClient;
         this.FName = FName;
         this.LName = LName;
         this.phoneNR = phoneNR;
         this.email_address = address;
         this.dateOfBirth = dateOfBirth;
+        this.addressID = addressDTO;
         this.noBookings=noBookings;
     }
 

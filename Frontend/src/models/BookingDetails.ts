@@ -1,5 +1,6 @@
 import { Car } from "./Car";
 import { Clients } from "./Client";
+import { ClientsDTO } from "./ClientsDTO";
 
 // import { Car } from "./Car";
 export interface BookingDetails{
@@ -13,5 +14,5 @@ export interface BookingDetails{
     idBooking: number;
     carId: number;
     car?:Car;
-    client?:Clients;
+    client?:ClientsDTO;
 }

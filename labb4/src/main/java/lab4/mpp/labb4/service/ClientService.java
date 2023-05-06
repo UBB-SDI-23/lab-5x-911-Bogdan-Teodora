@@ -51,19 +51,20 @@ class ClientService {
     }
     // end::get-aggregate-root[]
 
-    public List<ClientDTO> allClientsPaged(PageRequest pr) {
+    public List<Client> allClientsPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
         Sort sort = Sort.by("idClient").ascending(); // Add this line to sort clients by ID in ascending order
-        Page<Client> clients = repository.findAll(pr.withSort(sort)); // Add sort parameter to findAll method call
-        modelMapper.typeMap(Client.class,ClientDTO.class).addMapping(client -> client.getAddress().getAddress_id(),ClientDTO::setAddressID);
-        List<ClientDTO> clientsDTOs = clients.stream()
-                .map(client -> {
-                    ClientDTO clientDTO = modelMapper.map(client, ClientDTO.class);
-                    clientDTO.setNoBookings(repository.countBookingsByClientsId(client.getId()));
-                    return clientDTO;
-                })
-                .collect(Collectors.toList());
-        return clientsDTOs;
+//        Page<Client> clients = repository.findAll(pr.withSort(sort)); // Add sort parameter to findAll method call
+//        modelMapper.typeMap(Client.class,ClientDTO.class).addMapping(client -> client.getAddress().getAddress_id(),ClientDTO::setAddressID);
+//        List<ClientDTO> clientsDTOs = clients.stream()
+//                .map(client -> {
+//                    ClientDTO clientDTO = modelMapper.map(client, ClientDTO.class);
+//                    clientDTO.setNoBookings(repository.countBookingsByClientsId(client.getId()));
+//                    return clientDTO;
+//                })
+//                .collect(Collectors.toList());
+//        return clientsDTOs;
+        return repository.findAll(pr).stream().toList();
     }
 
     public Client newClient(Client newClient, Long addressId) {
@@ -233,6 +234,10 @@ class ClientService {
         }
         clientsStatistics.sort(Comparator.comparingDouble(ClientsDTOStatisticsCars::getAvgCarNrKilometers).reversed());
         return clientsStatistics;
+    }
+
+    public int getBookingsCount(Long carId){
+        return repository.countBookingsByClientsId(carId);
     }
 
     public Long countAllClients() {

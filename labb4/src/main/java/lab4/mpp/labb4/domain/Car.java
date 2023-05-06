@@ -1,5 +1,6 @@
 package lab4.mpp.labb4.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -146,6 +147,22 @@ public class Car{
                 ", year_manufacture=" + year_manufacture +
                 ", nr_kilometers=" + nrkilometers +
                 '}';
+    }
+
+    @JsonIgnore
+    public CarDTO getCarDTO(int transactionsCount ){
+        CarDTO clientDTO = new CarDTO();
+
+        clientDTO.setId(id);
+        clientDTO.setModel(model);
+        clientDTO.setBrand(brand);
+        clientDTO.setColor(color);
+        clientDTO.setYear_manufacture(year_manufacture);
+        clientDTO.setNrkilometers(nrkilometers);
+
+        clientDTO.setNoBookings(transactionsCount);
+        clientDTO.setDescription(description);
+        return clientDTO;
     }
 }
 

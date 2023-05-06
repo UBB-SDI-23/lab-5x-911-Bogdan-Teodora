@@ -53,7 +53,9 @@ class ClientController {
             @RequestParam int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         PageRequest pr = PageRequest.of(page, size);
-        return clientService.allClientsPaged(pr);
+        return this.clientService.allClientsPaged(pr).stream().map(car -> car.getClientDTO(clientService.getBookingsCount(car.getId()))).toList();
+
+//        return clientService.allClientsPaged(pr);
     }
 
     @PostMapping("/clients/{addressId}")

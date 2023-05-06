@@ -2,7 +2,7 @@ import { Address } from "./Address";
 import { BookingDetails } from "./BookingDetails";
 
 export interface Clients{
-    idClient : number;
+    id : number;
     phoneNR : string;
     email_address : string;
     dateOfBirth : string;

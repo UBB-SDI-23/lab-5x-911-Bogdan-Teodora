@@ -154,6 +154,20 @@ public class Client{
                 '}';
     }
 
+    public ClientDTO getClientDTO(int bookingsCount) {
+        ClientDTO clientDTO = new ClientDTO();
+
+        clientDTO.setIdClient(idClient);
+        clientDTO.setFName(FName);
+        clientDTO.setLName(LName);
+        clientDTO.setPhoneNR(phoneNR);
+        clientDTO.setEmail_address(email_address);
+        clientDTO.setDateOfBirth(dateOfBirth);
+
+        clientDTO.setNoBookings(bookingsCount);
+        return clientDTO;
+    }
+
 //    public ClientDTO toClientDTO()
 //    {
 //        ClientDTO client = new ClientDTO();

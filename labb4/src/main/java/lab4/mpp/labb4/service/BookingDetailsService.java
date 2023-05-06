@@ -54,9 +54,10 @@ class BookingDetailsService {
 
     public List<BookingDTOWithID> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
+        Sort sort = Sort.by("id").ascending();
         modelMapper.typeMap(BookingDetails.class, BookingDTOWithID.class);
 
-        Page<BookingDetails> bookingDetails = repository.findAll(pr);
+        Page<BookingDetails> bookingDetails = repository.findAll(pr.withSort(sort));
         return bookingDetails.stream()
                 .map(adoptionCustomer -> modelMapper.map(adoptionCustomer, BookingDTOWithID.class))
                 .collect(Collectors.toList());

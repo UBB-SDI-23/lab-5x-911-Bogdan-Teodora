@@ -105,7 +105,7 @@ export const ClientsShowAll = () => {
           >
           Next Page
           </Button> */}
-          <Pagination page={page} pageSize={pageSize} totalEntries={1000000} setPage={setPage} setPageSize={setPageSize} entityName="clients" />
+          <Pagination page={page} pageSize={pageSize} totalEntries={999994} setPage={setPage} setPageSize={setPageSize} entityName="clients" />
           <TableContainer component={Paper}>
               <Table sx={{ minWidth: 800 }} aria-label="simple table" style={{backgroundColor:"whitesmoke"}}>
                   <TableHead>

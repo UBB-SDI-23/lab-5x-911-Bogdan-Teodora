@@ -51,7 +51,7 @@ class CarService {
     }
     // end::get-aggregate-root[]
 
-    public List<CarDTO> allPaged(PageRequest pr) {
+    public List<Car> allPaged(PageRequest pr) {
 //        ModelMapper modelMapper = new ModelMapper();
 //        Sort sort = Sort.by("id").ascending(); // Add this line to sort clients by ID in ascending order
 //        Page<Car> cars = repository.findAll(pr.withSort(sort));
@@ -64,14 +64,15 @@ class CarService {
 //                })
 //                .collect(Collectors.toList());
 //        return carsDTOs;
-        ModelMapper modelMapper = new ModelMapper();
+//        ModelMapper modelMapper = new ModelMapper();
         Sort sort = Sort.by("id").ascending(); // Add this line to sort clients by ID in ascending order
-        Page<Car> cars = repository.findAll(pr.withSort(sort));
+//        Page<Car> cars = repository.findAll(pr.withSort(sort));
 
-        List<CarDTO> carsDTOs = cars.stream()
-                .map(car -> modelMapper.map(car, CarDTO.class))
-                .collect(Collectors.toList());
-        return carsDTOs;
+//        List<CarDTO> carsDTOs = cars.stream()
+//                .map(car -> modelMapper.map(car, CarDTO.class))
+//                .collect(Collectors.toList());
+//        return carsDTOs;
+        return repository.findAll(pr.withSort(sort)).stream().toList();
     }
 
     public Car newCar( Car newCar) {
@@ -197,9 +198,13 @@ class CarService {
         return repository.findByNrkilometersGreaterThanEqual(minNrKilometers);
     }
 
+    public int getBookingsCount(Long carId){
+        return repository.countBookingsByClientId(carId);
+    }
+
     //all the cars ordered by the average booking's price
-    public Page<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice(PageRequest pageable) {
-        List<Car> cars = repository.findAll();
+    public List<CarsDTOStatisticsBookingPrice> getAllCarsOrderByAvgBookingPrice(PageRequest pageable) {
+        Page<Car> cars = repository.findAll(pageable);
         List<CarsDTOStatisticsBookingPrice> carsDTOStatisticsBookingsPrices = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
         for (Car car : cars) {
@@ -216,7 +221,8 @@ class CarService {
             carsDTOStatisticsBookingsPrices.add(carsDTOStatisticsBookingPrice);
         }
         carsDTOStatisticsBookingsPrices.sort(Comparator.comparingDouble(CarsDTOStatisticsBookingPrice::getAgvBookingPrice).reversed());
-        return new PageImpl<>(carsDTOStatisticsBookingsPrices, pageable, cars.size());
+        return carsDTOStatisticsBookingsPrices;
+//        return new PageImpl<>(carsDTOStatisticsBookingsPrices, pageable, cars.getSize());
     }
 
     public Long countAllCars() {
