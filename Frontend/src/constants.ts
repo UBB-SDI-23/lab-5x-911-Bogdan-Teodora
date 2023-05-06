@@ -1,1 +1,1 @@
-export const  BACKEND_API_URL = "https://sdi-2023-hmk.jumpingcrab.com/api";
+export const  BACKEND_API_URL = "https://sdi-2023-hmk.jumpingcrab.com";
