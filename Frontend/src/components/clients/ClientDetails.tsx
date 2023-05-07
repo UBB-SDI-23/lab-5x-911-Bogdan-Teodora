@@ -21,7 +21,7 @@ export const ClientDetails = () => {
         const fetchClient = async () => {
           try {
             
-            const response = await fetch(`http://localhost:8080/clients/${id}/details`);
+            const response = await fetch(`${BACKEND_API_URL}/clients/${id}/details`);
             const data = await response.json();
             setClients(data);
             console.log(`Client id: ${data.idClient}`);

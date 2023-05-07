@@ -256,14 +256,14 @@ export const BookingsAdd = () => {
 							id="client"
 							options={clients}
 							getOptionLabel={(option) =>
-							`${option.id}, ${option.fname}, ${option.lname}`
+							`${option.id}, ${option.fname}, ${option.lname}, ${option.email_address}`
 							}
 							renderInput={(params) => (
-							<TextField {...params} label="Client first name" variant="outlined" />
+							<TextField {...params} label="Client email address" variant="outlined" />
 							)}
 							filterOptions={(options, state) =>
 							options.filter((option) =>
-								option.fname.toLocaleLowerCase().includes(state.inputValue.toLocaleLowerCase())
+								option.email_address.toLocaleLowerCase().includes(state.inputValue.toLocaleLowerCase())
 							)
 							}
 							onInputChange={handleClientsInputChange}

@@ -263,7 +263,7 @@ class ClientService {
         Page<Client> customers=repository.findAll(pr);
 
         return customers.stream()
-                .filter(adoption -> adoption.getFName().toLowerCase().contains(query.toLowerCase())).limit(20)
+                .filter(adoption -> adoption.getEmail_address().toLowerCase().contains(query.toLowerCase())).limit(20)
                 .collect(Collectors.toList());
     }
 
