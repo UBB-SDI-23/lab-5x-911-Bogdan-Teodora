@@ -64,7 +64,7 @@ class ClientService {
 //                })
 //                .collect(Collectors.toList());
 //        return clientsDTOs;
-        return repository.findAll(pr.withSort(sort)).stream().toList();
+        return repository.findAll(pr).stream().toList();
     }
 
     public Client newClient(Client newClient, Long addressId) {
