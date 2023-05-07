@@ -258,7 +258,7 @@ class ClientService {
     }
 
     public List<Client> getClientsNameAutocomplete(String query) {
-        PageRequest pr = PageRequest.of(0,500);
+        PageRequest pr = PageRequest.of(1,500);
 
         Page<Client> customers=repository.findAll(pr);
 
