@@ -10,16 +10,18 @@ import { BACKEND_API_URL } from "../../constants";
 
 import { Clients } from "../../models/Client";
 import { GlobalURL } from "../../main";
+import { ClientsDTO } from "../../models/ClientsDTO";
+import { ClientDTOWIthCarsIds } from "../../models/ClienDTOWIthCarsIDs";
 
 export const ClientDetails = () => {
     const { id } = useParams<{ id: string }>();
-    const [client, setClients] = useState<Clients>();
+    const [client, setClients] = useState<ClientsDTO>();
 
     useEffect(() => {
         const fetchClient = async () => {
           try {
             
-            const response = await fetch(`${BACKEND_API_URL}/clients/${id}/details`);
+            const response = await fetch(`http://localhost:8080/clients/${id}/details`);
             const data = await response.json();
             setClients(data);
             console.log(`Client id: ${data.idClient}`);
@@ -42,7 +44,7 @@ export const ClientDetails = () => {
 					<p>Client phone number: {client?.phoneNR}</p>
 					<p>Client email address: {client?.email_address}</p>
 					<p>Client date of birth : {client?.dateOfBirth}</p>
-                    <p>Client address id assigned : {client?.address?.address_id}</p>
+                    <p>Client address id assigned : {client?.addressID}</p>
                     <p>Client first name : {client?.fname}</p>
 					<p>Client last name : {client?.lname}</p>
 				</CardContent>

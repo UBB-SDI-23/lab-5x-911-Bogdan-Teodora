@@ -157,40 +157,53 @@ class ClientService {
 //        return clientDTO1MB;
     }
 
-    public ClientDTOWithCarsIds oneClient(String id){
-//        Long clientId = Long.parseLong(id);
-//        if (repository.findById(clientId).isEmpty())
-//            throw new ClientNotFoundException(clientId);
-//
-//        Client client=repository.findById(clientId).get();
-//        ClientDTO clientDTO=new ClientDTO();
-//        clientDTO.setAddressID(client.getAddress().getAddress_id());
-//        clientDTO.setIdClient(client.getId());
-//        clientDTO.setEmail_address(client.getEmail_address());
-//        clientDTO.setPhoneNR(client.getPhoneNR());
-//        clientDTO.setDateOfBirth(client.getDateOfBirth());
-//        clientDTO.setFName(client.getFName());
-//        clientDTO.setLName(client.getLName());
-//
-//        return  clientDTO;
+    public ClientDTO oneClient(String id){
         Long clientId = Long.parseLong(id);
         if (repository.findById(clientId).isEmpty())
             throw new ClientNotFoundException(clientId);
 
         Client client=repository.findById(clientId).get();
-        ClientDTOWithCarsIds clientDTOWithCarIds=new ClientDTOWithCarsIds();
+        ClientDTO clientDTO=new ClientDTO();
+        clientDTO.setAddressID(client.getAddress().getAddress_id());
+        clientDTO.setIdClient(client.getId());
+        clientDTO.setEmail_address(client.getEmail_address());
+        clientDTO.setPhoneNR(client.getPhoneNR());
+        clientDTO.setDateOfBirth(client.getDateOfBirth());
+        clientDTO.setFName(client.getFName());
+        clientDTO.setLName(client.getLName());
 
-        List<Long> carsIds=new ArrayList<>();
-        List<BookingDetails> bookingDetails=bookingRepo.findAll();
-        for(BookingDetails ac:bookingDetails)
-            if(Objects.equals(ac.getClient().getId(), client.getId()))
-                carsIds.add(ac.getCar().getId());
-        clientDTOWithCarIds.setCarsIds(carsIds);
-        clientDTOWithCarIds.setClient(client);
-        clientDTOWithCarIds.setAddressId(client.getAddress().getAddress_id());
-
-        return  clientDTOWithCarIds;
-
+        return  clientDTO;
+//        Long clientId = Long.parseLong(id);
+//        if (repository.findById(clientId).isEmpty())
+//            throw new ClientNotFoundException(clientId);
+//
+//        Client client=repository.findById(clientId).get();
+//        ClientDTOWithCarsIds clientDTOWithCarIds=new ClientDTOWithCarsIds();
+//
+//        List<Long> carsIds=new ArrayList<>();
+//        List<BookingDetails> bookingDetails=bookingRepo.findAll();
+//        for(BookingDetails ac:bookingDetails)
+//            if(Objects.equals(ac.getClient().getId(), client.getId()))
+//                carsIds.add(ac.getCar().getId());
+//        clientDTOWithCarIds.setCarsIds(carsIds);
+//        clientDTOWithCarIds.setClient(client);
+//        clientDTOWithCarIds.setAddressId(client.getAddress().getAddress_id());
+//
+//        return  clientDTOWithCarIds;
+//        Long clientId = Long.parseLong(id);
+//        Client client = repository.findById(clientId).get();
+//        ClientDTOWithCarsIds clientDTOWithCarsIds = new ClientDTOWithCarsIds();
+//        List<Long> clientIds = new ArrayList<>();
+//        List<BookingDetails> bookingDetails = bookingRepo.findAll();
+//        for(BookingDetails bd:bookingDetails){
+//            if(bd.getClient().getId() == client.getId()) {
+//                clientIds.add(bd.getCar().getId());
+//            }
+//        }
+//        clientDTOWithCarsIds.setCarsIds(clientIds);
+//        clientDTOWithCarsIds.setClient(client);
+//        clientDTOWithCarsIds.setAddressId(client.getAddress().getAddress_id());
+//        return clientDTOWithCarsIds;
     }
 
     public Client replaceClient( Client newClient, Long id) {

@@ -113,7 +113,7 @@ class ClientController {
     }
 
     @GetMapping("/clients/{id}/details")
-    ClientDTOWithCarsIds oneClient (@PathVariable String id){
+    ClientDTO oneClient (@PathVariable String id){
         return clientService.oneClient(id);
     }
 
