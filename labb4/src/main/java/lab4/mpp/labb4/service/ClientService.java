@@ -64,7 +64,7 @@ class ClientService {
 //                })
 //                .collect(Collectors.toList());
 //        return clientsDTOs;
-        return repository.findAll(pr).stream().toList();
+        return repository.findAll(pr.withSort(sort)).stream().toList();
     }
 
     public Client newClient(Client newClient, Long addressId) {
@@ -259,8 +259,9 @@ class ClientService {
 
     public List<Client> getClientsNameAutocomplete(String query) {
         PageRequest pr = PageRequest.of(1,500);
+        Sort sort = Sort.by("idClient").descending();
 
-        Page<Client> customers=repository.findAll(pr);
+        Page<Client> customers=repository.findAll(pr.withSort(sort));
 
         return customers.stream()
                 .filter(adoption -> adoption.getEmail_address().toLowerCase().contains(query.toLowerCase())).limit(20)
