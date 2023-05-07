@@ -53,7 +53,7 @@ class ClientService {
 
     public List<Client> allClientsPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
-        Sort sort = Sort.by("idClient").ascending(); // Add this line to sort clients by ID in ascending order
+        Sort sort = Sort.by("idClient").descending(); // Add this line to sort clients by ID in ascending order
 //        Page<Client> clients = repository.findAll(pr.withSort(sort)); // Add sort parameter to findAll method call
 //        modelMapper.typeMap(Client.class,ClientDTO.class).addMapping(client -> client.getAddress().getAddress_id(),ClientDTO::setAddressID);
 //        List<ClientDTO> clientsDTOs = clients.stream()
@@ -64,7 +64,7 @@ class ClientService {
 //                })
 //                .collect(Collectors.toList());
 //        return clientsDTOs;
-        return repository.findAll(pr).stream().toList();
+        return repository.findAll(pr.withSort(sort)).stream().toList();
     }
 
     public Client newClient(Client newClient, Long addressId) {
