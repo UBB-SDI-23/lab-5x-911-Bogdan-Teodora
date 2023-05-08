@@ -231,8 +231,8 @@ class CarService {
 
     public List<Car> getCarsIdsAutocomplete(String query) {
         PageRequest pr = PageRequest.of(0,500);
-
-        Page<Car> cars=repository.findAll(pr);
+        Sort sort = Sort.by("id").ascending();
+        Page<Car> cars=repository.findAll(pr.withSort(sort));
 
         return cars.stream()
                 .filter(adoption -> String.valueOf(adoption.getNrkilometers()).startsWith(query)).limit(20)

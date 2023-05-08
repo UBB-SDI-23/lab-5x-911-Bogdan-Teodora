@@ -228,9 +228,9 @@ class ClientService {
     }
 
     //statistics: show the clients orderd by the average of the number of kilometers of their booked/reserved cars
-    public List<ClientsDTOStatisticsCars> getClientsStatistics() {
+    public List<ClientsDTOStatisticsCars> getClientsStatistics(PageRequest pageable) {
         List<ClientsDTOStatisticsCars> clientsStatistics = new ArrayList<>();
-        List<Client> clients = repository.findAll();
+        Page<Client> clients = repository.findAll(pageable);
         ModelMapper modelMapper = new ModelMapper();
         for (Client client : clients) {
             double sum = 0.0;

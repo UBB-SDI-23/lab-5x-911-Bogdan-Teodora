@@ -40,7 +40,7 @@ class AddressService {
     public List<AddressDTO> allPaged(PageRequest pr) {
         ModelMapper modelMapper = new ModelMapper();
         Sort sort = Sort.by("address_id").ascending(); // Add this line to sort clients by ID in ascending order
-        Page<Address> addresses = repository.findAll(pr);
+        Page<Address> addresses = repository.findAll(pr.withSort(sort));
         List<AddressDTO> addressesDTOs = addresses.stream()
                 .map(addr -> {
                     AddressDTO addressDTO = modelMapper.map(addr, AddressDTO.class);
@@ -91,12 +91,17 @@ class AddressService {
 
     public List<Address> getAddressIdsAutocomplete( String query)
     {
-        PageRequest pr = PageRequest.of(1,500);
-        Page<Address> adoptions=repository.findAll(pr);
+        PageRequest pr = PageRequest.of(0,500);
+        Sort sort = Sort.by("id").ascending();
+        Page<Address> addresses=repository.findAll(pr.withSort(sort));
 
-        return adoptions.stream()
-                .filter(adoption -> adoption.getAddress_id().toString().startsWith(query)).limit(20)
+        return addresses.stream()
+                .filter(adoption -> adoption.getCity().toLowerCase().contains(query.toLowerCase())).limit(20)
                 .collect(Collectors.toList());
+
+//        return adoptions.stream()
+//                .filter(adoption -> adoption.getAddress_id().toString().startsWith(query)).limit(20)
+//                .collect(Collectors.toList());
     }
 
 

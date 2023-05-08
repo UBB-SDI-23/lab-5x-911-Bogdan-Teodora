@@ -185,14 +185,14 @@ export const ClientAdd = () => {
               id="address"
               options={address}
               getOptionLabel={(option) =>
-                `${option.address_id},  ${option.county}, ${option.city}`
+                `${option.address_id}, ${option.city},  ${option.county}, ${option.additional_info}`
               }
               renderInput={(params) => (
-                <TextField {...params} label="Address" variant="outlined" />
+                <TextField {...params} label="Address city" variant="outlined" />
               )}
               filterOptions={(options, date) =>
                 options.filter((option) =>
-                  option.address_id.toString().startsWith(date.inputValue)
+                  option.city.toString().startsWith(date.inputValue)
                 )
               }
               onInputChange={handleInputChange}

@@ -21,11 +21,15 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { GlobalURL } from "../../main";
 import { BACKEND_API_URL } from "../../constants";
 import { ClientStatistics } from "../../models/ClientStatistics";
+import Pagination from "../../helpers/PaginationManager";
 
 
 export const ClientsStatistics = () => {
     const [loading, setLoading]=useState(false);
     const [client, setClients] = useState([]);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const crt = (page - 1) * pageSize + 1;
   
     useEffect(() =>{   
       fetch(`${BACKEND_API_URL}/clients/statistics`)
@@ -35,7 +39,7 @@ export const ClientsStatistics = () => {
                 setLoading(false);
                       
                   });
-      }, []);  
+      }, [page, pageSize]);  
 
       return (
         <Container>
@@ -53,6 +57,8 @@ export const ClientsStatistics = () => {
                     </div>
           )} */}
           {!loading && client.length > 0 && (
+            <>
+            <Pagination page={page} pageSize={pageSize} totalEntries={999990} setPage={setPage} setPageSize={setPageSize} entityName="clients" />
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -95,6 +101,7 @@ export const ClientsStatistics = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            </>
           )}
         </Container>
       );

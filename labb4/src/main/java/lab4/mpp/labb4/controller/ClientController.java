@@ -129,8 +129,10 @@ class ClientController {
 
     //statistics: show the clients orderd by the average of the number of kilometers of their booked/reserved cars
     @GetMapping("/clients/statistics")
-    public List<ClientsDTOStatisticsCars> getClientsStatistics() {
-        return clientService.getClientsStatistics();
+    public List<ClientsDTOStatisticsCars> getClientsStatistics(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                               @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        PageRequest pr = PageRequest.of(page, size);
+        return clientService.getClientsStatistics(pr);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
