@@ -74,7 +74,7 @@ export const ClientAdd = () => {
 
       const data = await response.json();
 
-      setClients(data);
+      setAddress(data);
 
       console.log(data);
     } catch (error) {
