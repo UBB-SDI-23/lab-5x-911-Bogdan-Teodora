@@ -23,7 +23,7 @@ export const CarDetails = () => {
         const fetchCar = async () => {
           try {
             
-            const response = await fetch(`http://localhost:8080/cars/${id}/details`);
+            const response = await fetch(`${BACKEND_API_URL}/cars/${id}/details`);
             const data = await response.json();
             setCars(data);
             console.log(`Car id: ${data.id}`);
