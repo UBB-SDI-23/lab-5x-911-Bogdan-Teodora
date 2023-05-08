@@ -14,7 +14,6 @@ import {
 	IconButton,
 	Tooltip,
   Button,
-  Pagination,
   Box
 } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -27,14 +26,16 @@ import { BACKEND_API_URL } from "../../constants";
 import { Clients } from "../../models/Client";
 import { Address } from "../../models/Address";
 import { CarDTO } from "../../models/CarDTO";
+import Pagination from "../../helpers/PaginationManager";
+
 
 const PAGE_SIZE = 100;
 export const CarsShowAll = () => {
     const [loading, setLoading] = useState(false);
     const [car, setCars] = useState<CarDTO[]>([]);
+    const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [totalCars, setTotalCars] =useState(0)
-    const [currentPage, setCurrentPage]=useState(0)
+    const crt = (page - 1) * pageSize + 1;
   
   
     useEffect(() => {
@@ -44,10 +45,9 @@ export const CarsShowAll = () => {
         fetch(`${BACKEND_API_URL}/cars/countAll`)
         .then((response) => response.json())
         .then((count) => {
-          fetch(`${BACKEND_API_URL}/cars/page/${currentPage}/size/${pageSize}`)
+          fetch(`${BACKEND_API_URL}/cars/page/${page}/size/${pageSize}`)
           .then((response) => response.json())
           .then((data) => {
-            setTotalCars(count);
             setCars(data);
             setLoading(false);
           });
@@ -58,19 +58,8 @@ export const CarsShowAll = () => {
         });
       };
       fetchRecLbl();
-    }, [currentPage, pageSize]);
+    }, [page, pageSize]);
   
-    
-    const handlePreviousPage = () => {
-      if(currentPage>0)
-      {
-        setCurrentPage(currentPage-1);
-      }
-    };
-  
-    const handleNextPage = () => {
-      setCurrentPage(currentPage+1);
-    };
 
     const sortCars = () => {
         const sortedCar = [...car].sort((a: CarDTO, b: CarDTO) => {
@@ -107,29 +96,12 @@ export const CarsShowAll = () => {
                     Sort cars by number of kilometers
                 </Button>
             )}
-  
-        {!loading && (
-              <div style ={{display: "flex", alignItems:"center"}}>
-                 
-                  <Button
-                    sx={{color:"black"}}
-                    disabled={currentPage===0}
-                    onClick={handlePreviousPage}>
-                      Previous Page
-                  </Button>
-                  <Button
-                   sx={{color:"black"}} onClick={handleNextPage}>
-                    Next Page
-                   </Button>
-  
-                   <Box mx={2} display="flex" alignItems="center">
-                    Page {currentPage+1} of {Math.ceil(totalCars/pageSize)}
-                   </Box>
-              </div>
-              )}
-        
+         
   
         {!loading && car.length > 0 && (
+          <>
+                    <Pagination page={page} pageSize={pageSize} totalEntries={999990} setPage={setPage} setPageSize={setPageSize} entityName="clients" />
+
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -199,15 +171,16 @@ export const CarsShowAll = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          </>
         )}
-        <Button
-            sx={{color:"black"}}
-            disabled={currentPage===0}
-            onClick={handlePreviousPage}>
+        <Button style={{color:"whitesmoke"}} disabled={page === 1} onClick={() => setPage(page - 1)}>
               Previous Page
             </Button>
   
-          <Button sx={{color:"black"}} onClick={handleNextPage}>
+            <Button style={{color:"whitesmoke"}}
+          disabled={car.length < pageSize}
+          onClick={() => setPage(page + 1)}
+          >
             Next Page
           </Button>
       </Container>
