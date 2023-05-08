@@ -1,3 +1,5 @@
+import { BookingDetails } from "./BookingDetails";
+
 export interface Car{
     id : number;
     model : string;
@@ -6,4 +8,5 @@ export interface Car{
     year_manufacture : number;
     nrkilometers : number;
     description : string;
+    bookingDetailsSet:BookingDetails[];
 }

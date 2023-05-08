@@ -127,7 +127,7 @@ export const AddressesShowAll = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                <TableCell>#</TableCell>IdCar
+                <TableCell>#</TableCell>IdAddress
                   <TableCell align="right">Country</TableCell>
                   <TableCell align="center">County</TableCell>
                   <TableCell align="right">City</TableCell>

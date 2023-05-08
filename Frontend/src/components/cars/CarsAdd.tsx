@@ -23,6 +23,7 @@ export const CarsAdd = () => {
 		year_manufacture: 0,
 		nrkilometers: 1,
 		description : "",
+		bookingDetailsSet : []
 	});
 
 	// State variables for input field errors
